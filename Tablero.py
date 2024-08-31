@@ -1,36 +1,6 @@
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable
 from abc import ABC
-# pylint: disable=cSpell
-
-
-class Placeable(ABC):
-    def __init__(self):
-        pass
-
-
-class TaTeTiFicha(Placeable):
-    def __init__(self):
-        self._
-
-
-class FichaCirculo(Placeable):
-    def __init__(self):
-        self._nombre = "Circulo"
-        self._symbol = "O"  # HEREDAR ESTOOOOOO
-
-    @property
-    def symbol(self):
-        return self._symbol
-
-
-class FichaCuadrado(Placeable):
-    def __init__(self):
-        self._nombre = "Cuadrado"
-        self._symbol = "[[]]"
-
-    @property
-    def symbol(self):
-        return self._symbol
+from fichas import FichaCirculo, FichaCuadrado, FichaCruz, Placeable
 
 
 class Casillero():
@@ -41,20 +11,41 @@ class Casillero():
         self._pieza = None
 
     @property
+    def columna(self):
+        return self._columna
+
+    @property
+    def fila(self):
+        return self._fila
+
+    @property
     def symbol(self):
         return self._symbol
 
     @property
-    def pieza(self):
+    def pieza(self) -> Placeable | None:
         return self._pieza
 
     @pieza.setter
-    def pieza(self, new_pieza):
+    def pieza(self, new_pieza: Placeable):
         self._pieza = new_pieza
 
-    @pieza.setter
-    def ficha(self, new_pieza):
-        self._pieza = new_pieza
+    def set_pieza_to_none(self):
+        self._pieza = None
+
+
+class Coordenadas():
+    def __init__(self, x, y) -> None:
+        self._x = x
+        self._y = y
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
 
 
 class Tablero(Iterable):
@@ -83,6 +74,15 @@ class Tablero(Iterable):
             for columna in range(self._columnas):
                 new_tile = Casillero(columna, fila)
                 matriz[fila].append(new_tile)
-
-        matriz[0][0].pieza = FichaCuadrado()
         return matriz
+
+    def get_specific_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
+        return self._tablero_matriz[coordenadas.x][coordenadas.y]
+
+    def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
+        casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
+        casillero.pieza = pieza
+
+    def borrar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas):
+        casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
+        casillero.set_pieza_to_none()
