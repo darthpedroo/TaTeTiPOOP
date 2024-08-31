@@ -1,15 +1,9 @@
-from juego import Juego, TableroConsola, TableroPygame
+from juego import TaTeTi, ProcesadorTableroConsola
+from tablero import Tablero
 
-tablero_consola = TableroConsola()
-tablero_pygame = TableroPygame()
-juego = Juego(tablero_consola)
-# juego.tablero = tablero_consola
+tablero_ta_te_ti = Tablero(3, 3)
+tablero_chess = Tablero(8, 8)
+procesador_tablero_consola = ProcesadorTableroConsola()
 
-seleccion = input("ELIJA SI QUIERE JUGAR EN LA CONSOLA 1) O EN PYGAME 2)")
-
-if seleccion == "1":
-    juego.tablero = tablero_consola
-else:
-    juego.tablero = tablero_pygame
-
-juego.tablero.dibujar_tablero.dibujar_tablero()
+ta_te_ti = TaTeTi(tablero_ta_te_ti, procesador_tablero_consola)
+ta_te_ti.jugar()
