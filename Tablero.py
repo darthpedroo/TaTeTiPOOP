@@ -35,6 +35,13 @@ class Casillero():
 
 
 class Coordenadas():
+    """Clase que representa coordenadas en el tablero.
+
+    Attributes:
+        x (int): La posición en la columna del tablero (eje X).
+        y (int): La posición en la fila del tablero (eje Y).
+    """
+
     def __init__(self, x, y) -> None:
         self._x = x
         self._y = y
@@ -77,6 +84,14 @@ class Tablero(Iterable):
         return matriz
 
     def get_specific_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
+        """Devuelve un casillero del tablero en base a coordenadas específicas
+
+        Args:
+            coordenadas (Coordenadas):
+
+        Returns:
+            Casillero: (Casillero)
+        """
         return self._tablero_matriz[coordenadas.x][coordenadas.y]
 
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
