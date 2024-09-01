@@ -3,6 +3,16 @@ from abc import ABC
 from fichas import FichaCirculo, FichaCuadrado, FichaCruz, Placeable
 
 
+class CasilleroOcupado(Exception):
+    def __init__(self):
+        super().__init__("El Casillero Está Ocupado")
+
+
+class CoordenadasFueraDelTablero(Exception):
+    def __init__(self):
+        super().__init__("Las coordenadas ingresadas se encuentran fuera del tablero")
+
+
 class Casillero():
     def __init__(self, columna, fila):
         self._columna = columna
@@ -28,6 +38,8 @@ class Casillero():
 
     @pieza.setter
     def pieza(self, new_pieza: Placeable):
+        if self._pieza != None:
+            raise CasilleroOcupado()
         self._pieza = new_pieza
 
     def set_pieza_to_none(self):
@@ -61,6 +73,18 @@ class Tablero(Iterable):
         self._filas = filas
         self._tablero_matriz = self.crear_tablero()
 
+    @property
+    def tablero_matriz(self):
+        return self._tablero_matriz
+
+    @property
+    def columnas(self):
+        return self._columnas
+
+    @property
+    def filas(self):
+        return self._filas
+
     def __iter__(self):
         "Itera el tablero devolviendo por filas"
         for fila in range(self._filas):
@@ -71,7 +95,6 @@ class Tablero(Iterable):
                     row_representation.append(casillero.symbol)
                 else:
                     row_representation.append(casillero.pieza.symbol)
-
             yield "".join(row_representation)
 
     def crear_tablero(self):
@@ -85,14 +108,17 @@ class Tablero(Iterable):
 
     def get_specific_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
         """Devuelve un casillero del tablero en base a coordenadas específicas
-
         Args:
             coordenadas (Coordenadas):
 
         Returns:
             Casillero: (Casillero)
         """
-        return self._tablero_matriz[coordenadas.x][coordenadas.y]
+        if coordenadas.x > self._columnas or coordenadas.y > self._filas:
+            raise CoordenadasFueraDelTablero()
+
+        # IMPORTANTE. CODE SMELL!!!!!! FIJARSE PQ ESTA AL REVES :v. puede que sea el iterador :V
+        return self._tablero_matriz[coordenadas.y][coordenadas.x]
 
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
