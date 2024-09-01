@@ -81,9 +81,10 @@ class TaTeTiVictoryHandler(VictoryHandler):
 
         column_win = self.check_column()
         row_win = self.check_row()
-        if column_win != None:
+
+        if column_win is not None:
             return column_win
-        elif row_win != None:
+        if row_win is not None:
             return row_win
-        else:
-            return None
+
+        return None
