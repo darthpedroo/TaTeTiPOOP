@@ -124,43 +124,28 @@ class TaTeTiVictoryHandler(VictoryHandler):
                         return current_winner
 
     def check_right_diagonal(self):
-
-        cantidad_filas_tablero = self.tablero_to_check_victory.filas
-        cantidad_columnas_tablero = self.tablero_to_check_victory.columnas
-
-        for row in range(cantidad_filas_tablero):
-            for column in range(cantidad_columnas_tablero):
-
+        for row in range(self.tablero_to_check_victory.filas):
+            for column in range(self.tablero_to_check_victory.columnas):
                 current_winner = None
                 current_points = 0
 
-                start_x = cantidad_columnas_tablero-column-1
-                start_y = row-1
+                # For right diagonals, we start from (column, row) and move up-right
+                x_shift = column
+                y_shift = row
 
-                minimun_iteration_over_diagonal = max(start_x, start_y)
+                # Determine the maximum number of steps we can take in the diagonal direction
+                minimun_iteration_over_diagonal = min(
+                    x_shift + 1, self.tablero_to_check_victory.filas - y_shift)
 
-                for diagonal_iterator in range(minimun_iteration_over_diagonal+1):
-
-                    diagonal_iterator_x = start_x - diagonal_iterator  # OJO
-                    diagonal_iterator_y = start_y + diagonal_iterator
-
-                    print("DIAGONAL_ITERATORx: ", start_x -
-                          diagonal_iterator, start_x,  diagonal_iterator)
-                    print("DIAGONAL_ITERATORy: ", start_y -
-                          diagonal_iterator, start_y,  diagonal_iterator)
+                for diagonal_iterator in range(minimun_iteration_over_diagonal):
+                    diagonal_iterator_x = x_shift - diagonal_iterator
+                    diagonal_iterator_y = y_shift + diagonal_iterator
 
                     pieza_coordenadas = Coordenadas(
                         diagonal_iterator_x, diagonal_iterator_y)
-
                     casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
                         pieza_coordenadas)
                     pieza = casillero.pieza
-
-                    print("pieza:", pieza)
-                    print(
-                        "col:", casillero.columna)
-                    print(
-                        "row: ", casillero.fila)
 
                     if pieza is None:
                         current_winner = None
@@ -170,8 +155,11 @@ class TaTeTiVictoryHandler(VictoryHandler):
                     else:
                         current_winner = pieza
                         current_points = 1
+
                     if current_points >= self._points_to_win:
                         return current_winner
+
+        return None
 
     def check_victory(self):  # pasar el tablero aca, NO EN EL INIT
 
