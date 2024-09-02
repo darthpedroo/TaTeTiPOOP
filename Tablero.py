@@ -120,6 +120,10 @@ class Tablero(Iterable):
         # IMPORTANTE. CODE SMELL!!!!!! FIJARSE PQ ESTA AL REVES :v. puede que sea el iterador :V
         return self._tablero_matriz[coordenadas.y][coordenadas.x]
 
+    def get_oposite_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
+
+        pass
+
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
         casillero.pieza = pieza

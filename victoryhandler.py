@@ -1,5 +1,5 @@
 from abc import ABC
-from tablero import Tablero
+from tablero import Tablero, Coordenadas
 from fichas import FichaCirculo, FichaCruz, FichaCuadrado
 from team import TeamTaTeTi
 
@@ -46,7 +46,13 @@ class TaTeTiVictoryHandler(VictoryHandler):
             current_winner = None
             current_points = 0
             for row in range(self.tablero_to_check_victory.filas):
-                pieza = self.tablero_to_check_victory.tablero_matriz[row][col].pieza
+                casillero_coordenadas = Coordenadas(col, row)
+                casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
+                    casillero_coordenadas)
+                pieza = casillero.pieza
+                print("pieza: ", casillero.pieza)
+                print("col: ", casillero.columna)
+                print("rwo: ", casillero.fila)
                 if pieza is None:
                     # Si no hay pieza reseteo el contador
                     current_points = 0
@@ -64,7 +70,10 @@ class TaTeTiVictoryHandler(VictoryHandler):
             current_winner = None
             current_points = 0
             for col in range(self.tablero_to_check_victory.columnas):
-                pieza = self.tablero_to_check_victory.tablero_matriz[row][col].pieza
+                casillero_coordenadas = Coordenadas(col, row)
+                casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
+                    casillero_coordenadas)
+                pieza = casillero.pieza
                 if pieza is None:
                     current_points = 0
                     current_winner = None
@@ -73,18 +82,112 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 else:
                     current_winner = pieza
                     current_points = 1
-
                 if current_points >= self._points_to_win:
                     return current_winner
 
-    def check_victory(self):
+    def check_left_diagonal(self):
+        for row in range(self.tablero_to_check_victory.filas):
+            for column in range(self.tablero_to_check_victory.columnas):
+                current_winner = None
+                current_points = 0
+                # Pongo min porque si el tablero no es de dimension n*n tiene que agarrar el lado mas chico así no tira Error de index
+                x_shift = column
+                y_shift = row
 
+                minimun_iteration_over_diagonal = min(
+                    self.tablero_to_check_victory.columnas - x_shift, self.tablero_to_check_victory.filas - y_shift)
+
+                for diagonal_iterator in range(minimun_iteration_over_diagonal):
+                    diagonal_iterator_x = diagonal_iterator + x_shift
+                    diagonal_iterator_y = diagonal_iterator + y_shift
+
+                    pieza_coordenadas = Coordenadas(
+                        diagonal_iterator_x, diagonal_iterator_y)
+
+                    casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
+                        pieza_coordenadas)
+                    pieza = casillero.pieza
+                  #  print("pieza:", pieza)
+                   # print(
+                    #   "col:", self.tablero_to_check_victory.tablero_matriz[diagonal_iterator_x][diagonal_iterator_y].columna)
+                    # print(
+                    #   "row: ", self.tablero_to_check_victory.tablero_matriz[diagonal_iterator_x][diagonal_iterator_y].fila)
+                    if pieza is None:
+                        current_winner = None
+                        current_points = 0
+                    elif pieza == current_winner:
+                        current_points += 1
+                    else:
+                        current_winner = pieza
+                        current_points = 1
+                    if current_points >= self._points_to_win:
+                        return current_winner
+
+    def check_right_diagonal(self):
+
+        cantidad_filas_tablero = self.tablero_to_check_victory.filas
+        cantidad_columnas_tablero = self.tablero_to_check_victory.columnas
+
+        for row in range(cantidad_filas_tablero):
+            for column in range(cantidad_columnas_tablero):
+
+                current_winner = None
+                current_points = 0
+
+                start_x = cantidad_columnas_tablero-column-1
+                start_y = row-1
+
+                minimun_iteration_over_diagonal = max(start_x, start_y)
+
+                for diagonal_iterator in range(minimun_iteration_over_diagonal+1):
+
+                    diagonal_iterator_x = start_x - diagonal_iterator  # OJO
+                    diagonal_iterator_y = start_y + diagonal_iterator
+
+                    print("DIAGONAL_ITERATORx: ", start_x -
+                          diagonal_iterator, start_x,  diagonal_iterator)
+                    print("DIAGONAL_ITERATORy: ", start_y -
+                          diagonal_iterator, start_y,  diagonal_iterator)
+
+                    pieza_coordenadas = Coordenadas(
+                        diagonal_iterator_x, diagonal_iterator_y)
+
+                    casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
+                        pieza_coordenadas)
+                    pieza = casillero.pieza
+
+                    print("pieza:", pieza)
+                    print(
+                        "col:", casillero.columna)
+                    print(
+                        "row: ", casillero.fila)
+
+                    if pieza is None:
+                        current_winner = None
+                        current_points = 0
+                    elif pieza == current_winner:
+                        current_points += 1
+                    else:
+                        current_winner = pieza
+                        current_points = 1
+                    if current_points >= self._points_to_win:
+                        return current_winner
+
+    def check_victory(self):  # pasar el tablero aca, NO EN EL INIT
+
+        print("pts:", self._points_to_win)
         column_win = self.check_column()
-        row_win = self.check_row()
-
         if column_win is not None:
             return column_win
+        row_win = self.check_row()
         if row_win is not None:
             return row_win
+        left_diagonal_win = self.check_left_diagonal()
+        if left_diagonal_win is not None:
+            return left_diagonal_win
+
+        right_diagonal_win = self.check_right_diagonal()
+        if right_diagonal_win is not None:
+            return right_diagonal_win
 
         return None

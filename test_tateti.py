@@ -150,14 +150,9 @@ class TestTablero(unittest.TestCase):
                 coordenadas)
 
 
-class TestJugador(unittest.TestCase):
-    def test_01_caca(self):
-        pass
-
-
-class TestTaTeTiVictoryHandler(unittest.TestCase):
+class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
     def setUp(self):
-        self.tablero_ta_te_ti = Tablero(5, 5)
+        self.tablero_ta_te_ti = Tablero(3, 3)
         self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz()), TeamTaTeTi(
             "Mega Rizzlers", FichaCirculo())]
         self.victory_handler = TaTeTiVictoryHandler(
@@ -191,9 +186,8 @@ class TestTaTeTiVictoryHandler(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        print("Ganador:", self.victory_handler.check_victory())
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory())
+            current_pieza, self.victory_handler.check_column())
 
     def test_02_fila_1_del_tablero_completa_equipo_2(self):
         current_pieza = self.teams[1].pieza_del_equipo
@@ -318,6 +312,152 @@ class TestTaTeTiVictoryHandler(unittest.TestCase):
         print("Ganador:", self.victory_handler.check_victory())
         self.assertEqual(
             current_pieza, self.victory_handler.check_victory())
+
+    def test_08_diagonal_izquierda_victoria(self):
+        print("test_08_diagonal")
+        current_pieza = self.teams[1].pieza_del_equipo
+        x1 = 0
+        x2 = 1
+        x3 = 2
+        y1 = 0
+        y2 = 1
+        y3 = 2
+        mov1_coordenadas = Coordenadas(x1, y1)
+        mov2_coordenadas = Coordenadas(x2, y2)
+        mov3_coordenadas = Coordenadas(x3, y3)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov1_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov2_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov3_coordenadas, current_pieza)
+        self.procesador_tablero_consola.dibujar_tablero()
+        self.assertEqual(current_pieza, self.victory_handler.check_victory())
+
+
+class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
+    def setUp(self):
+        puntos_para_ganar = 4
+        self.tablero_ta_te_ti = Tablero(5, 5)
+        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz()), TeamTaTeTi(
+            "Mega Rizzlers", FichaCirculo())]
+        self.victory_handler = TaTeTiVictoryHandler(
+            puntos_para_ganar, self.tablero_ta_te_ti, self.teams)
+        self.procesador_tablero_consola = ProcesadorTableroConsola(
+            self.tablero_ta_te_ti)
+
+    def test_01_check_left_diagonal_win(self):
+        print("test_01_check_left_diagonal_win")
+        current_pieza = self.teams[1].pieza_del_equipo
+        x1 = 2
+        x2 = 3
+        x3 = 4
+        y1 = 1
+        y2 = 2
+        y3 = 3
+        x4 = 1
+        y4 = 0
+        mov1_coordenadas = Coordenadas(x1, y1)
+        mov2_coordenadas = Coordenadas(x2, y2)
+        mov3_coordenadas = Coordenadas(x3, y3)
+        mov4_coordenadas = Coordenadas(x4, y4)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov1_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov2_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov3_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov4_coordenadas, current_pieza)
+        self.procesador_tablero_consola.dibujar_tablero()
+        self.assertEqual(current_pieza, self.victory_handler.check_victory())
+
+    def test_02_check_right_diagonal_win(self):
+        print("test_01_check_left_diagonal_win")
+        current_pieza = self.teams[1].pieza_del_equipo
+        x1 = 4
+        x2 = 3
+        x3 = 2
+        x4 = 1
+
+        y1 = 0
+        y2 = 1
+        y3 = 2
+        y4 = 3
+
+        mov1_coordenadas = Coordenadas(x1, y1)
+        mov2_coordenadas = Coordenadas(x2, y2)
+        mov3_coordenadas = Coordenadas(x3, y3)
+        mov4_coordenadas = Coordenadas(x4, y4)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov1_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov2_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov3_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov4_coordenadas, current_pieza)
+        self.procesador_tablero_consola.dibujar_tablero()
+        self.assertEqual(
+            current_pieza, self.victory_handler.check_right_diagonal())
+
+    def test_02_check_right_diagonal_win_desfasado(self):
+        print("test_02_check_right_diagonal_win_offset_down")
+        current_pieza = self.teams[1].pieza_del_equipo
+        x1 = 4
+        x2 = 3
+        x3 = 2
+        x4 = 1
+
+        y1 = 1
+        y2 = 2
+        y3 = 3
+        y4 = 4
+
+        mov1_coordenadas = Coordenadas(x1, y1)
+        mov2_coordenadas = Coordenadas(x2, y2)
+        mov3_coordenadas = Coordenadas(x3, y3)
+        mov4_coordenadas = Coordenadas(x4, y4)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov1_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov2_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov3_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov4_coordenadas, current_pieza)
+        self.procesador_tablero_consola.dibujar_tablero()
+        self.assertEqual(
+            current_pieza, self.victory_handler.check_right_diagonal())
+
+    def test_03_check_right_diagonal_win_desfasado_2(self):
+        print("test_03_check_right_diagonal_win_offset_right")
+        current_pieza = self.teams[1].pieza_del_equipo
+        x1 = 3
+        x2 = 2
+        x3 = 1
+        x4 = 0
+
+        y1 = 0
+        y2 = 1
+        y3 = 2
+        y4 = 3
+
+        mov1_coordenadas = Coordenadas(x1, y1)
+        mov2_coordenadas = Coordenadas(x2, y2)
+        mov3_coordenadas = Coordenadas(x3, y3)
+        mov4_coordenadas = Coordenadas(x4, y4)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov1_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov2_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov3_coordenadas, current_pieza)
+        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+            mov4_coordenadas, current_pieza)
+        self.procesador_tablero_consola.dibujar_tablero()
+        self.assertEqual(
+            current_pieza, self.victory_handler.check_right_diagonal())
 
 
 if __name__ == "__main__":
