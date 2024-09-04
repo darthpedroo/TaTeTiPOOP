@@ -17,7 +17,7 @@
 },
 
 "WW": {
-    "nombre_equipo": "Say my name.\n",
+    "nombre_equipo": "Say my name (of the team).\n",
     "bienvenido": "I'm the one who plays!\n",
     "num_equipos": "How many teams are gonna break bad?\n",
     "ficha_jugador_str": "You are not a king, you are a piece. Choose it: [X or O]\n",

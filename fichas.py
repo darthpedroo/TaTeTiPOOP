@@ -11,6 +11,13 @@ class TaTeTiFicha(Placeable):
         self._nombre = nombre
         self._symbol = symbol
 
+    def __eq__(self, other: 'TaTeTiFicha') -> bool:
+        if other is None:
+            return False
+        if self._symbol == other._symbol:
+            return True
+        return False
+
     @property
     def nombre(self):
         return self._nombre

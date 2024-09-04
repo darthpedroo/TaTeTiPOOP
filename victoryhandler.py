@@ -125,3 +125,4 @@ class TaTeTiVictoryHandler(VictoryHandler):
         if empate:
             return empate
         return None
+        
