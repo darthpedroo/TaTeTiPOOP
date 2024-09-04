@@ -10,9 +10,8 @@ class VictoryHandler(ABC):
 
 class TaTeTiVictoryHandler(VictoryHandler):
     # Hacer que teams sea un args
-    def __init__(self, points_to_win: int, tablero: Tablero | None = None, list_of_teams: list[TeamTaTeTi] | None = None):
+    def __init__(self, points_to_win: int, tablero: Tablero | None = None):
         self._tablero_to_check_victory = tablero
-        self._list_of_teams = list_of_teams
         self._points_to_win = points_to_win
         self._current_points = 0
         self._current_winner = None
@@ -25,21 +24,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
     def tablero_to_check_victory(self, new_tablero: Tablero):
         self._tablero_to_check_victory = new_tablero
 
-    @property
-    def list_of_teams(self):
-        return self._tablero_to_check_victory
 
-    @list_of_teams.setter
-    def list_of_teams(self, new_list_of_teams: list[TeamTaTeTi]):
-        self._list_of_teams = new_list_of_teams
-
-    # Hay 8 posibles combinaciones para ganar
-
-    def get_list_of_pieces_from_team(self):
-        list_of_pieces = []
-        for team in self._list_of_teams:
-            list_of_pieces.append(team.pieza_del_equipo)
-        return list_of_pieces
 
     def decide_if_set_current_winner(self, casillero_coordenadas : Coordenadas):
         casillero = self.tablero_to_check_victory.get_specific_casillero_from_coordenadas(
@@ -57,7 +42,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
         return pieza
 
 
-    def check_column(self):
+    def check_column(self,list_of_teams: list[TeamTaTeTi]):
         for col in range(self.tablero_to_check_victory.columnas):
             # Reseteo al ganador al cambiar de columna
             self._current_points = 0 
@@ -68,7 +53,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 if self._current_points >= self._points_to_win:
                     return self._current_winner
 
-    def check_row(self):
+    def check_row(self,list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
             self._current_points = 0 
             self._current_winner = None
@@ -78,7 +63,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 if self._current_points >= self._points_to_win:
                     return self._current_winner
 
-    def check_left_diagonal(self):
+    def check_left_diagonal(self, list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
             self._current_points = 0 
             self._current_winner = None
@@ -97,7 +82,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 if self._current_points >= self._points_to_win:
                     return self._current_winner
 
-    def check_right_diagonal(self):
+    def check_right_diagonal(self, list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
             self._current_points = 0 
             self._current_winner = None
@@ -118,25 +103,25 @@ class TaTeTiVictoryHandler(VictoryHandler):
                     if self._current_points >= self._points_to_win:
                         return self._current_winner
 
-    def check_empate(self):
+    def check_empate(self, list_of_teams: list[TeamTaTeTi]):
         if self.tablero_to_check_victory.is_tablero_lleno():
-            return self._list_of_teams
+            return list_of_teams
 
             
-    def check_victory(self):  # pasar el tablero aca, NO EN EL INIT
-        column_win = self.check_column()
+    def check_victory(self,list_of_teams: list[TeamTaTeTi] ):  # pasar el tablero aca, NO EN EL INIT
+        column_win = self.check_column(list_of_teams)
         if column_win is not None:
             return column_win
-        row_win = self.check_row()
+        row_win = self.check_row(list_of_teams)
         if row_win is not None:
             return row_win
-        left_diagonal_win = self.check_left_diagonal()
+        left_diagonal_win = self.check_left_diagonal(list_of_teams)
         if left_diagonal_win is not None:
             return left_diagonal_win
-        right_diagonal_win = self.check_right_diagonal()
+        right_diagonal_win = self.check_right_diagonal(list_of_teams)
         if right_diagonal_win is not None:
             return right_diagonal_win
-        empate = self.check_empate()
+        empate = self.check_empate(list_of_teams)
         if empate:
             return empate
         return None

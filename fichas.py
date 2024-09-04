@@ -29,7 +29,9 @@ class FichaCuadrado(TaTeTiFicha):
     def __init__(self):
         super().__init__(nombre="Cuadrado", symbol="[[]]")
 
-
 class FichaCruz(TaTeTiFicha):
     def __init__(self):
         super().__init__(nombre="Cruz", symbol="[X]")
+
+
+    
