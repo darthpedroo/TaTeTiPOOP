@@ -1,71 +1,9 @@
 from collections.abc import Iterable
-from abc import ABC
-from fichas import FichaCirculo, FichaCuadrado, FichaCruz, Placeable
-
-
-class CasilleroOcupado(Exception):
-    def __init__(self):
-        super().__init__("El Casillero Está Ocupado")
-
-
-class CoordenadasFueraDelTablero(Exception):
-    def __init__(self):
-        super().__init__("Las coordenadas ingresadas se encuentran fuera del tablero")
-
-
-class Casillero():
-    def __init__(self, columna, fila):
-        self._columna = columna
-        self._fila = fila
-        self._symbol = "[-]"
-        self._pieza = None
-
-    @property
-    def columna(self):
-        return self._columna
-
-    @property
-    def fila(self):
-        return self._fila
-
-    @property
-    def symbol(self):
-        return self._symbol
-
-    @property
-    def pieza(self) -> Placeable | None:
-        return self._pieza
-
-    @pieza.setter
-    def pieza(self, new_pieza: Placeable):
-        if self._pieza != None:
-            raise CasilleroOcupado()
-        self._pieza = new_pieza
-
-    def set_pieza_to_none(self):
-        self._pieza = None
-
-
-class Coordenadas():
-    """Clase que representa coordenadas en el tablero.
-
-    Attributes:
-        x (int): La posición en la columna del tablero (eje X).
-        y (int): La posición en la fila del tablero (eje Y).
-    """
-
-    def __init__(self, x, y) -> None:
-        self._x = x
-        self._y = y
-
-    @property
-    def x(self):
-        return self._x
-
-    @property
-    def y(self):
-        return self._y
-
+from fichas import Placeable
+from fichas import Placeable
+from coordenadas import Coordenadas
+from casillero import Casillero
+from exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
 
 class Tablero(Iterable):
     def __init__(self, columnas, filas) -> None:

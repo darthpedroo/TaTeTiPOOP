@@ -1,4 +1,5 @@
-from juego import TaTeTi, ProcesadorTableroConsola
+from juego import TaTeTi
+from procesador import ProcesadorTableroConsola
 from tablero import Tablero
 
 tablero_ta_te_ti = Tablero(3, 3)

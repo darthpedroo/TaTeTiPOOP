@@ -1,6 +1,7 @@
 import unittest
 from tablero import Tablero, Coordenadas, CasilleroOcupado, CoordenadasFueraDelTablero
-from juego import TaTeTi, ProcesadorTableroConsola
+from juego import TaTeTi
+from procesador import ProcesadorTableroConsola
 from fichas import FichaCirculo, FichaCruz
 from victoryhandler import TaTeTiVictoryHandler
 from team import TeamTaTeTi
