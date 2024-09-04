@@ -120,10 +120,6 @@ class Tablero(Iterable):
         # IMPORTANTE. CODE SMELL!!!!!! FIJARSE PQ ESTA AL REVES :v. puede que sea el iterador :V
         return self._tablero_matriz[coordenadas.y][coordenadas.x]
 
-    def get_oposite_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
-
-        pass
-
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
         casillero.pieza = pieza
@@ -131,3 +127,11 @@ class Tablero(Iterable):
     def borrar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
         casillero.set_pieza_to_none()
+
+    def is_tablero_lleno(self):
+        for columna in range(self._columnas):
+            for fila in range(self._filas):
+                coordenadas_pieza = Coordenadas(columna,fila)
+                if self.get_specific_casillero_from_coordenadas(coordenadas_pieza).pieza is None:
+                    return False
+        return True 

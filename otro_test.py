@@ -30,40 +30,52 @@ class TestTaTeTi(unittest.TestCase):
             mov_p1, pieza_j1)
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
-        self.assertEqual(
-            None, self.ta_te_ti._tateti_victory_handler.check_victory())
 
-        mov_p2 = Coordenadas(0, 0)
+        mov_p2 = Coordenadas(2, 2)
         self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
             mov_p2, pieza_j2)
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
-        self.assertEqual(
-            None, self.ta_te_ti._tateti_victory_handler.check_victory())
 
-        mov_p1 = Coordenadas(2, 2)
+        mov_p1 = Coordenadas(0, 0)
         self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
             mov_p1, pieza_j1)
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
-        self.assertEqual(
-            None, self.ta_te_ti._tateti_victory_handler.check_victory())
 
         mov_p2 = Coordenadas(0, 1)
         self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
             mov_p2, pieza_j2)
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
-        self.assertEqual(
-            None, self.ta_te_ti._tateti_victory_handler.check_victory())
 
-        mov_p1 = Coordenadas(0, 2)
+
+        mov_p1 = Coordenadas(1, 1)
         self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
             mov_p1, pieza_j1)
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
-        self.assertEqual(
-            pieza_j1, self.ta_te_ti._tateti_victory_handler.check_victory())
+        mov_p2 = Coordenadas(1, 0)
+        self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
+            mov_p2, pieza_j2)
+        self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
+        mov_p1 = Coordenadas(2, 0)
+        self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
+            mov_p1, pieza_j1)
+        self.ta_te_ti._procesador_tablero.dibujar_tablero()
+
+        mov_p2 = Coordenadas(0, 2)
+        self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
+            mov_p2, pieza_j2)
+        self.ta_te_ti._procesador_tablero.dibujar_tablero()
+
+        mov_p1 = Coordenadas(2, 1)
+        self.ta_te_ti._tablero.agregar_pieza_a_casillero_from_coordenadas(
+            mov_p1, pieza_j1)
+        self.ta_te_ti._procesador_tablero.dibujar_tablero()
+
+
+        self.assertEqual(self.teams, self.victory_handler.check_victory())
 
 if __name__ == "__main__":
     unittest.main()

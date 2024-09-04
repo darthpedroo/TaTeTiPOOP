@@ -82,7 +82,7 @@ class TestTablero(unittest.TestCase):
             coordenadas)
         self.assertEqual(
             self.tablero_ta_te_ti._tablero_matriz[x][y], new_casillero)
-
+    
     def test_02_get_casillero_from_coordenadas_tira_error(self):
         print("test_02_get_casillero_from_coordenadas_tira_error")
         x = 0
@@ -148,6 +148,34 @@ class TestTablero(unittest.TestCase):
         with self.assertRaises(CoordenadasFueraDelTablero):
             self.tablero_ta_te_ti.borrar_pieza_a_casillero_from_coordenadas(
                 coordenadas)
+
+    def test_07_tablero_lleno(self):
+        print("test_07_tablero_lleno")
+        curr_pieza = FichaCirculo()
+
+        for columnas in range(self.tablero_ta_te_ti.columnas):
+            for filas in range(self.tablero_ta_te_ti.filas):
+                coordenadas = Coordenadas(columnas, filas)
+                self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+                    coordenadas, curr_pieza)
+                self.procesador_tablero_consola.dibujar_tablero()
+
+        self.assertTrue(self.tablero_ta_te_ti.is_tablero_lleno())
+
+    def test_08_tablero_incompleto(self):
+        print("test_08_tablero_incompleto")
+        curr_pieza = FichaCirculo()
+
+        for columnas in range(self.tablero_ta_te_ti.columnas-1):
+            for filas in range(self.tablero_ta_te_ti.filas-1):
+                coordenadas = Coordenadas(columnas, filas)
+                self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+                    coordenadas, curr_pieza)
+                self.procesador_tablero_consola.dibujar_tablero()
+
+        self.assertFalse(self.tablero_ta_te_ti.is_tablero_lleno())
+        
+        
 
 
 class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
@@ -333,6 +361,11 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
         self.assertEqual(current_pieza, self.victory_handler.check_victory())
+    
+    def test_09_check_empate(self):
+        print("test_09_check_empate")
+        
+
 
 
 class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):

@@ -9,7 +9,11 @@ class Team(ABC):
     @property  # El metodo no es abstracto porque todas las sublcases de team van a acceder al property nombre de la misma manera
     def nombre(self):
         return self._nombre
-
+    
+    def __eq__(self, other):
+        if self._nombre == other._nombre: #IMPLEMENTAR QUE NO SE PUEDA REPETIR UN NOMBRE EN UN EQUIPO :v
+            return True
+        return False
 
 class TeamTaTeTi(Team):
     def __init__(self, nombre: str, pieza_del_equipo: Placeable) -> None:
