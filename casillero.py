@@ -6,7 +6,7 @@ class Casillero():
         self._columna = columna
         self._fila = fila
         self._symbol = "[-]"
-        self._pieza = None
+        self._pieza = None #Hacer un metodo "CasilleroOcupado y que devuelva true or false y dps"
 
     @property
     def columna(self):

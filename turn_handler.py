@@ -10,6 +10,7 @@ class TurnHandler():
         self._teams = teams
         self._current_team_turn = self.get_team_with_cross_piece()
         self._turn_index = 0
+        self._sorted_list_of_teams = self.sort_list_of_teams_based_on_turns()
 
     def get_team_with_cross_piece(self):
         """Devuelve al equipo que juegue con la ficha de la Cruz"""
@@ -33,7 +34,7 @@ class TurnHandler():
         elif self._turn_index >= len(self._teams)-1:
             self._turn_index = 0
         
-        self._current_team_turn = self._teams[self._turn_index]
+        self._current_team_turn = self._sorted_list_of_teams[self._turn_index]
 
     @property 
     def turn_index(self):

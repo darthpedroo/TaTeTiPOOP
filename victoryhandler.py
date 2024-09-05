@@ -51,7 +51,8 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 casillero_coordenadas = Coordenadas(col, row)
                 self.decide_if_set_current_winner(casillero_coordenadas)
                 if self._current_points >= self._points_to_win:
-                    return self._current_winner
+                    return self.get_team_based_on_piece(list_of_teams, self._current_winner)
+        
 
     def check_row(self,list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
@@ -61,7 +62,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
                 casillero_coordenadas = Coordenadas(col, row)
                 self.decide_if_set_current_winner(casillero_coordenadas)
                 if self._current_points >= self._points_to_win:
-                    return self._current_winner
+                    return self.get_team_based_on_piece(list_of_teams, self._current_winner)
 
     def check_left_diagonal(self, list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
@@ -80,7 +81,7 @@ class TaTeTiVictoryHandler(VictoryHandler):
                         diagonal_iterator_x, diagonal_iterator_y)
                     self.decide_if_set_current_winner(casillero_coordenadas)
                 if self._current_points >= self._points_to_win:
-                    return self._current_winner
+                    return self.get_team_based_on_piece(list_of_teams, self._current_winner)
 
     def check_right_diagonal(self, list_of_teams: list[TeamTaTeTi]):
         for row in range(self.tablero_to_check_victory.filas):
@@ -101,28 +102,39 @@ class TaTeTiVictoryHandler(VictoryHandler):
                         diagonal_iterator_x, diagonal_iterator_y)
                     self.decide_if_set_current_winner(casillero_coordenadas)
                     if self._current_points >= self._points_to_win:
-                        return self._current_winner
+                        return self.get_team_based_on_piece(list_of_teams, self._current_winner)
 
     def check_empate(self, list_of_teams: list[TeamTaTeTi]):
         if self.tablero_to_check_victory.is_tablero_lleno():
             return list_of_teams
 
+    def get_team_based_on_piece(self, list_of_teams: list[TeamTaTeTi], pieza):
+        for team in list_of_teams:
+            if team.pieza_del_equipo == pieza:
+                return team
+        
+
             
     def check_victory(self,list_of_teams: list[TeamTaTeTi] ):  # pasar el tablero aca, NO EN EL INIT
         column_win = self.check_column(list_of_teams)
         if column_win is not None:
+            print("Ganador por columna: ", column_win)
             return column_win
         row_win = self.check_row(list_of_teams)
         if row_win is not None:
+            print("Ganador por Fila: ", row_win)
             return row_win
         left_diagonal_win = self.check_left_diagonal(list_of_teams)
         if left_diagonal_win is not None:
+            print("Ganador por Diagonal Izquierda: ", left_diagonal_win)
             return left_diagonal_win
         right_diagonal_win = self.check_right_diagonal(list_of_teams)
         if right_diagonal_win is not None:
+            print("Ganador por Diagonal Derecha: ", right_diagonal_win)
             return right_diagonal_win
         empate = self.check_empate(list_of_teams)
         if empate:
+            print("Empate entre los equipos:", empate)
             return empate
         return None
         

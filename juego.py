@@ -99,7 +99,6 @@ class TaTeTi():
             x_input = int(input("Ingrese la columna\n")) 
             y_input = int(input("Ingrese la fila\n"))
             current_pieza = turn_handler.current_team_turn.pieza_del_equipo
-
             try:
                 coordenadas = Coordenadas(x_input, y_input)
             except CoordenadasFueraDelTablero:
