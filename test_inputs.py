@@ -48,13 +48,26 @@ class TestUserInputTaTeTi(unittest.TestCase):
         '1',
         '2',
         '0',
+        'dop',  # ME TIRA ERROR EL INPUT
+        'si',
+        # JUEGO LA MISMA PARTIDA DEVUELTA
+        '0',
+        '0',
+        '0',
+        '1',
+        '1',
+        '0',
+        '1',
+        '1',
+        '2',
+        '0',
+        'no'
     ])
     def test01_partida_completa_jugada_con_test_de_inputs(self, mock_input):
 
         self.ta_te_ti.jugar()
-
-        # self.assertEqual(self.ta_te_ti.list_of_teams[0], self.victory_handler.check_victory(
-        #    self.ta_te_ti.list_of_teams))
+        self.assertEqual(self.ta_te_ti.list_of_teams[0], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
 
 
 if __name__ == "__main__":

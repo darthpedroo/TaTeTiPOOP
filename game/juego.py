@@ -94,7 +94,23 @@ class TaTeTi():
         print(self._json_translator.read_json("empezar_juego"))
 
     def empezar_partida(self):
-        self._tablero
+        self._tablero.volver_a_crear_tablero()
+        self._procesador_tablero.dibujar_tablero()
+        self.poner_pieza()
+
+    def volver_a_jugar(self):
+        volver_a_jugar_input = input(
+            "VOLVER A JUGAR?:\n 1) SI\n 2) NO\n").upper()
+
+        print(volver_a_jugar_input)
+
+        if volver_a_jugar_input == "SI":
+            self.empezar_partida()
+        elif volver_a_jugar_input == "NO":
+            print("Gracias por jugar !")
+        else:
+            print("ESCRIBA CORRECTAMENTE SU INPUT")
+            self.volver_a_jugar()
 
     def poner_pieza(self):
         victory = False
@@ -121,9 +137,7 @@ class TaTeTi():
             turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
 
-        self._tablero.volver_a_crear_tablero()
-        self._procesador_tablero.dibujar_tablero()
-        self.poner_pieza()
+        self.volver_a_jugar()
 
     def jugar(self):
         self.menu_creacion_equipos()
