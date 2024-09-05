@@ -2,7 +2,7 @@ from abc import ABC
 from game.tablero import Tablero
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
-from game.fichas import FichaCirculo, FichaCruz
+from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
 from game.json_translator import JSONTranslator
 from game.coordenadas import Coordenadas
 from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
@@ -14,12 +14,20 @@ class TaTeTi():
     def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler, language: str = "ES") -> None:
         self._tablero = tablero
         self._procesador_tablero = procesador_tablero
-        self._procesador_tablero.tablero_matriz = tablero
+        self._procesador_tablero.tablero_matriz = tablero  # CODE APESTOSITO
         self._tateti_victory_handler = victory_handler
         self._tateti_victory_handler.tablero_to_check_victory = self._tablero
         self._list_of_teams = []
+
+        self._list_of_possible_pieces = [
+            FichaCirculo(), FichaSigma(), FichaCruz(), FichaVater()]
+
+        self._list_of_used_pieces = []
+
+        # Language
         self._language = language
         self._json_translator = JSONTranslator()
+        self._json_translator.set_language(language)  # Codigo oloroso
 
     @property
     def list_of_teams(self):
@@ -61,21 +69,31 @@ class TaTeTi():
             player_name_list.append(name)
         return player_name_list
 
+    def seleccionar_ficha(self):
+        ficha_class = None
+
+        while ficha_class is None:
+            print("FICHAS DISPONIBLES\n")
+            for ficha in self._list_of_possible_pieces:
+                if ficha not in self._list_of_used_pieces:
+                    print(ficha.nombre, ficha.symbol,
+                          "USAR ESTE IDENTIFICADOR PARA SELECCIONARLA: ", ficha.identificador, "\n")
+            ficha_jugador_str = input(self._json_translator.read_json(
+                "ficha_jugador_str")).capitalize()
+
+            for ficha2 in self._list_of_possible_pieces:
+                if ficha2 not in self._list_of_used_pieces:
+                    if ficha2.identificador == ficha_jugador_str:
+                        self._list_of_used_pieces.append(ficha2)
+                        return ficha2
+            print("ELIJA CORRECTAMENTE EL IDENTIFICADOR")
+            self.seleccionar_ficha()
+
     def create_team(self):
         nombre_equipo = input(self._json_translator.read_json("nombre_equipo"))
         cantidad_players_equipo = self.seleccionar_numero_jugadores_por_equipo()
         player_name_list = self.add_players_to_list(cantidad_players_equipo)
-        ficha_class = None
-        while ficha_class is None:
-            ficha_jugador_str = input(self._json_translator.read_json(
-                "ficha_jugador_str")).capitalize()
-            print("ficha_jugador", ficha_jugador_str)
-            if ficha_jugador_str == "X":
-                ficha_class = FichaCruz()
-            elif ficha_jugador_str == "O":
-                ficha_class = FichaCirculo()
-            else:
-                print(self._json_translator.read_json("error_ficha_invalida"))
+        ficha_class = self.seleccionar_ficha()
         team_temp = TeamTaTeTi(nombre_equipo, ficha_class, player_name_list)
         self._list_of_teams.append(team_temp)
 
@@ -96,6 +114,7 @@ class TaTeTi():
     def empezar_partida(self):
         self._tablero.volver_a_crear_tablero()
         self._procesador_tablero.dibujar_tablero()
+        self._list_of_used_pieces = []
         self.poner_pieza()
 
     def volver_a_jugar(self):
@@ -136,7 +155,6 @@ class TaTeTi():
                 self.poner_pieza()  # cambiar este codigo del diablo
             turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
-
         self.volver_a_jugar()
 
     def jugar(self):

@@ -1,6 +1,5 @@
 from abc import ABC
 from game.tablero import Tablero, Coordenadas
-from game.fichas import FichaCirculo, FichaCruz, FichaCuadrado
 from game.team import TeamTaTeTi
 
 
@@ -10,8 +9,7 @@ class VictoryHandler(ABC):
 
 class TaTeTiVictoryHandler(VictoryHandler):
     # Hacer que teams sea un args
-    def __init__(self, points_to_win: int, tablero: Tablero | None = None):
-        self._tablero_to_check_victory = tablero
+    def __init__(self, points_to_win: int):
         self._points_to_win = points_to_win
         self._current_points = 0
         self._current_winner = None

@@ -19,7 +19,7 @@ class TestTaTeTi(unittest.TestCase):
             "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
 
         self.victory_handler = TaTeTiVictoryHandler(
-            3, self.tablero_ta_te_ti)
+            3)
 
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
                                self.procesador_tablero_consola, self.victory_handler)
@@ -189,7 +189,7 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
             "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
         self.victory_handler = TaTeTiVictoryHandler(
-            3, self.tablero_ta_te_ti)
+            3)
         self.procesador_tablero_consola = ProcesadorTableroConsola(
             self.tablero_ta_te_ti)
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
@@ -386,7 +386,7 @@ class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
         self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
             "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
         self.victory_handler = TaTeTiVictoryHandler(
-            puntos_para_ganar, self.tablero_ta_te_ti)
+            puntos_para_ganar)
         self.procesador_tablero_consola = ProcesadorTableroConsola(
             self.tablero_ta_te_ti)
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
