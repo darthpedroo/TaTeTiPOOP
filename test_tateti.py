@@ -1,7 +1,7 @@
 import unittest
 from game.tablero import Tablero
 from game.coordenadas import Coordenadas
-from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasNoSonPositivas, CoordenadasSonStr
 from game.juego import TaTeTi
 from game.procesador import ProcesadorTableroConsola
 from game.fichas import FichaCirculo, FichaCruz
@@ -181,6 +181,25 @@ class TestTablero(unittest.TestCase):
                 self.procesador_tablero_consola.dibujar_tablero()
 
         self.assertFalse(self.tablero_ta_te_ti.is_tablero_lleno())
+
+    def test_09_coordenadas_no_son_int_tira_error(self):
+        print("test_09_coordenadas_no_son_int_tira_error")
+        curr_pieza = FichaCirculo()
+        x = "-0"
+        y = -230
+        with self.assertRaises(CoordenadasSonStr):
+            coordenadas = Coordenadas(x, y)
+            self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+                coordenadas, curr_pieza)
+
+    def test_10_coordenadas_no_son_positivas_tira_error(self):
+        curr_pieza = FichaCirculo()
+        x = -10
+        y = -230
+        with self.assertRaises(CoordenadasNoSonPositivas):
+            coordenadas = Coordenadas(x, y)
+            self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
+                coordenadas, curr_pieza)
 
 
 class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):

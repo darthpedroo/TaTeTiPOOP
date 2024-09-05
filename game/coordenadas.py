@@ -1,6 +1,6 @@
+from game.exceptions import CoordenadasSonStr, CoordenadasNoSonPositivas
 
 
-    
 class Coordenadas():
     """Clase que representa coordenadas en el tablero.
 
@@ -10,6 +10,7 @@ class Coordenadas():
     """
 
     def __init__(self, x, y) -> None:
+        self.validate_coordinates(x, y)
         self._x = x
         self._y = y
 
@@ -20,3 +21,9 @@ class Coordenadas():
     @property
     def y(self):
         return self._y
+
+    def validate_coordinates(self, x, y):
+        if not isinstance(x, int) or not isinstance(y, int):
+            raise CoordenadasSonStr()
+        if x < 0 or y < 0:
+            raise CoordenadasNoSonPositivas()
