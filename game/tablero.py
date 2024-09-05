@@ -1,9 +1,9 @@
 from collections.abc import Iterable
-from fichas import Placeable
-from fichas import Placeable
-from coordenadas import Coordenadas
-from casillero import Casillero
-from exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+from game.fichas import Placeable
+from game.coordenadas import Coordenadas
+from game.casillero import Casillero
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+
 
 class Tablero(Iterable):
     def __init__(self, columnas, filas) -> None:
@@ -69,7 +69,10 @@ class Tablero(Iterable):
     def is_tablero_lleno(self):
         for columna in range(self._columnas):
             for fila in range(self._filas):
-                coordenadas_pieza = Coordenadas(columna,fila)
+                coordenadas_pieza = Coordenadas(columna, fila)
                 if self.get_specific_casillero_from_coordenadas(coordenadas_pieza).pieza is None:
                     return False
-        return True 
+        return True
+
+    def volver_a_crear_tablero(self):
+        self._tablero_matriz = self.crear_tablero()

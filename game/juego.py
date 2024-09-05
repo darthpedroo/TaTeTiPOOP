@@ -1,14 +1,13 @@
 from abc import ABC
-import sys
-from tablero import Tablero
-from victoryhandler import TaTeTiVictoryHandler
-from team import TeamTaTeTi
-from fichas import FichaCirculo, FichaCruz
-from json_translator import JSONTranslator
-from coordenadas import Coordenadas
-from exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
-from player import Player
-from turn_handler import TurnHandler
+from game.tablero import Tablero
+from game.victoryhandler import TaTeTiVictoryHandler
+from game.team import TeamTaTeTi
+from game.fichas import FichaCirculo, FichaCruz
+from game.json_translator import JSONTranslator
+from game.coordenadas import Coordenadas
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+from game.player import Player
+from game.turn_handler import TurnHandler
 
 
 class TaTeTi():
@@ -94,6 +93,9 @@ class TaTeTi():
             self.create_team()
         print(self._json_translator.read_json("empezar_juego"))
 
+    def empezar_partida(self):
+        self._tablero
+
     def poner_pieza(self):
         victory = False
         turn_handler = TurnHandler(self.list_of_teams)
@@ -118,6 +120,10 @@ class TaTeTi():
                 self.poner_pieza()  # cambiar este codigo del diablo
             turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
+
+        self._tablero.volver_a_crear_tablero()
+        self._procesador_tablero.dibujar_tablero()
+        self.poner_pieza()
 
     def jugar(self):
         self.menu_creacion_equipos()

@@ -1,12 +1,13 @@
-from fichas import Placeable
-from exceptions import CasilleroOcupado
+from game.fichas import Placeable
+from game.exceptions import CasilleroOcupado
+
 
 class Casillero():
     def __init__(self, columna, fila):
         self._columna = columna
         self._fila = fila
         self._symbol = "[-]"
-        self._pieza = None #Hacer un metodo "CasilleroOcupado y que devuelva true or false y dps"
+        self._pieza = None  # Hacer un metodo "CasilleroOcupado y que devuelva true or false y dps"
 
     @property
     def columna(self):
@@ -32,4 +33,3 @@ class Casillero():
 
     def set_pieza_to_none(self):
         self._pieza = None
-

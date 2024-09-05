@@ -1,5 +1,5 @@
-from team import TeamTaTeTi
-from fichas import FichaCruz
+from game.team import TeamTaTeTi
+from game.fichas import FichaCruz
 
 #TeamTurnHandler
 #PlayerTurnHandler

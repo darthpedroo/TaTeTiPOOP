@@ -1,12 +1,13 @@
 import unittest
-from tablero import Tablero
-from coordenadas import Coordenadas
-from exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
-from juego import TaTeTi
-from procesador import ProcesadorTableroConsola
-from fichas import FichaCirculo, FichaCruz
-from victoryhandler import TaTeTiVictoryHandler
-from team import TeamTaTeTi
+from game.tablero import Tablero
+from game.coordenadas import Coordenadas
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+from game.juego import TaTeTi
+from game.procesador import ProcesadorTableroConsola
+from game.fichas import FichaCirculo, FichaCruz
+from game.victoryhandler import TaTeTiVictoryHandler
+from game.team import TeamTaTeTi
+from game.player import Player
 
 
 class TestTaTeTi(unittest.TestCase):
@@ -14,16 +15,16 @@ class TestTaTeTi(unittest.TestCase):
     def setUp(self):
         self.tablero_ta_te_ti = Tablero(3, 3)
         self.procesador_tablero_consola = ProcesadorTableroConsola()
-        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz()), TeamTaTeTi(
-            "Mega Rizzlers", FichaCirculo())]
+        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
+            "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
 
         self.victory_handler = TaTeTiVictoryHandler(
             3, self.tablero_ta_te_ti)
-        
+
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
                                self.procesador_tablero_consola, self.victory_handler)
         self.ta_te_ti._list_of_teams = self.teams
-    
+
     def test_01_partida_1_vs_1(self):
         print("test_01_partida_1_vs_1")
         pieza_j1 = self.teams[0].pieza_del_equipo
@@ -68,7 +69,7 @@ class TestTaTeTi(unittest.TestCase):
         self.ta_te_ti._procesador_tablero.dibujar_tablero()
 
         self.assertEqual(
-            pieza_j1, self.ta_te_ti._tateti_victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[0], self.ta_te_ti._tateti_victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
 
 class TestTablero(unittest.TestCase):
@@ -79,7 +80,6 @@ class TestTablero(unittest.TestCase):
         self.procesador_tablero_consola = ProcesadorTableroConsola(
             self.tablero_ta_te_ti)
 
-
     def test_01_get_casillero_from_coordenadas(self):
         print("test_01_get_casillero_from_coordenadas")
         x = 0
@@ -89,7 +89,7 @@ class TestTablero(unittest.TestCase):
             coordenadas)
         self.assertEqual(
             self.tablero_ta_te_ti._tablero_matriz[x][y], new_casillero)
-    
+
     def test_02_get_casillero_from_coordenadas_tira_error(self):
         print("test_02_get_casillero_from_coordenadas_tira_error")
         x = 0
@@ -181,15 +181,13 @@ class TestTablero(unittest.TestCase):
                 self.procesador_tablero_consola.dibujar_tablero()
 
         self.assertFalse(self.tablero_ta_te_ti.is_tablero_lleno())
-        
-        
 
 
 class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
     def setUp(self):
         self.tablero_ta_te_ti = Tablero(3, 3)
-        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz()), TeamTaTeTi(
-            "Mega Rizzlers", FichaCirculo())]
+        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
+            "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
         self.victory_handler = TaTeTiVictoryHandler(
             3, self.tablero_ta_te_ti)
         self.procesador_tablero_consola = ProcesadorTableroConsola(
@@ -197,8 +195,6 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
                                self.procesador_tablero_consola, self.victory_handler)
         self.ta_te_ti._list_of_teams = self.teams
-
-
 
     def test_01_1_columna_3_del_tablero_completa_equipo_2(self):
         print("test_01_1_columna_3_del_tablero_completa_equipo_2")
@@ -222,7 +218,7 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_02_fila_1_del_tablero_completa_equipo_2(self):
         current_pieza = self.teams[1].pieza_del_equipo
@@ -242,8 +238,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
 
         self.procesador_tablero_consola.dibujar_tablero()
 
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
-        self.assertEqual(current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
+        self.assertEqual(self.teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
 
     def test_03_fila_2_del_tablero_completa_equipo_2(self):
         current_pieza = self.teams[1].pieza_del_equipo
@@ -263,8 +261,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
 
         self.procesador_tablero_consola.dibujar_tablero()
 
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
-        self.assertEqual(current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
+        self.assertEqual(self.teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
 
     def test_04_fila_3_del_tablero_completa_equipo_2(self):
         current_pieza = self.teams[1].pieza_del_equipo
@@ -282,8 +282,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
-        self.assertEqual(current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
+        self.assertEqual(self.teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
 
     def test_05_columna_1_del_tablero_completa_equipo_2(self):
         print("test_05_columna_1_del_tablero_completa_equipo_2")
@@ -302,9 +304,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_06_columna_2_del_tablero_completa_equipo_2(self):
         print("test_06_columna_2_del_tablero_completa_equipo_2")
@@ -323,9 +326,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_07_columna_3_del_tablero_completa_equipo_2(self):
         print("test_07_columna_3_del_tablero_completa_equipo_2")
@@ -344,9 +348,10 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        print("Ganador:", self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        print("Ganador:", self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_08_diagonal_izquierda_victoria(self):
         print("test_08_diagonal")
@@ -367,20 +372,19 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov3_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        self.assertEqual(current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
-    
+        self.assertEqual(self.teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
+
     def test_09_check_empate(self):
         print("test_09_check_empate")
-        
-
 
 
 class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
     def setUp(self):
         puntos_para_ganar = 4
         self.tablero_ta_te_ti = Tablero(5, 5)
-        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz()), TeamTaTeTi(
-            "Mega Rizzlers", FichaCirculo())]
+        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
+            "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
         self.victory_handler = TaTeTiVictoryHandler(
             puntos_para_ganar, self.tablero_ta_te_ti)
         self.procesador_tablero_consola = ProcesadorTableroConsola(
@@ -413,7 +417,8 @@ class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
         self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
             mov4_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
-        self.assertEqual(current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+        self.assertEqual(self.teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams))
 
     def test_02_check_right_diagonal_win(self):
         print("test_01_check_left_diagonal_win")
@@ -442,7 +447,7 @@ class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
             mov4_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_02_check_right_diagonal_win_desfasado(self):
         print("test_02_check_right_diagonal_win_offset_down")
@@ -471,7 +476,7 @@ class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
             mov4_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
     def test_03_check_right_diagonal_win_desfasado_2(self):
         print("test_03_check_right_diagonal_win_offset_right")
@@ -500,7 +505,7 @@ class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
             mov4_coordenadas, current_pieza)
         self.procesador_tablero_consola.dibujar_tablero()
         self.assertEqual(
-            current_pieza, self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
+            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams))
 
 
 if __name__ == "__main__":

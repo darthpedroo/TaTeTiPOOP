@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from fichas import Placeable, FichaCirculo
-from player import Player
+from game.fichas import Placeable, FichaCirculo
+from game.player import Player
 
 
 class Team(ABC):

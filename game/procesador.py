@@ -1,4 +1,5 @@
-from tablero import Tablero
+from game.tablero import Tablero
+
 
 class ProcesadorTableroConsola():
     def __init__(self, tablero: Tablero | None = None) -> None:
