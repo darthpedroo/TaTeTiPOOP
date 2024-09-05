@@ -33,7 +33,6 @@ class TurnHandler():
             self._turn_index +=1
         elif self._turn_index >= len(self._teams)-1:
             self._turn_index = 0
-        
         self._current_team_turn = self._sorted_list_of_teams[self._turn_index]
 
     @property 
