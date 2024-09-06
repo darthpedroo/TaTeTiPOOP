@@ -394,9 +394,6 @@ class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
         self.assertEqual(self.teams[1], self.victory_handler.check_victory(
             self.ta_te_ti.list_of_teams))
 
-    def test_09_check_empate(self):
-        print("test_09_check_empate")
-
 
 class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
     def setUp(self):
