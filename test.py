@@ -1,0 +1,8 @@
+get_up_neighbour()
+get_down_neighbour()
+get_left_neighbour()
+get_right_neighbour()
+get_left_up_neighbour()
+get_left_down_neighbour()
+get_right_down_neighbour()
+get_right_left_neighbour()

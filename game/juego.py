@@ -3,7 +3,6 @@ from game.tablero import Tablero
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
-from game.json_translator import JSONTranslator
 from game.coordenadas import Coordenadas
 from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasSonStr, CoordenadasNoSonPositivas
 from game.player import Player
@@ -16,7 +15,6 @@ class TaTeTi():
         self._procesador_tablero = procesador_tablero
         self._procesador_tablero.tablero_matriz = tablero  # CODE APESTOSITO
         self._tateti_victory_handler = victory_handler
-        self._tateti_victory_handler.tablero_to_check_victory = self._tablero
         self._list_of_teams = []
 
         self._list_of_possible_pieces = [
@@ -26,8 +24,6 @@ class TaTeTi():
 
         # Language
         self._language = language
-        self._json_translator = JSONTranslator()
-        self._json_translator.set_language(language)  # Codigo oloroso
         self._turn_handler = None
 
     @property
@@ -49,7 +45,7 @@ class TaTeTi():
         valid_input = False
         while not valid_input:
             num_equipos = (
-                input(self._json_translator.read_json("num_equipos")))
+                input("Cuántos equipos van a jugar?"))
             valid_input = self.is_input_a_valid_int(num_equipos)
         num_equipos = int(num_equipos)
         return num_equipos
@@ -97,7 +93,7 @@ class TaTeTi():
         return ficha_class
 
     def create_team(self):
-        nombre_equipo = input(self._json_translator.read_json("nombre_equipo"))
+        nombre_equipo = input("Ingrese el nombre del equipo")
         cantidad_players_equipo = self.seleccionar_numero_jugadores_por_equipo()
         player_name_list = self.add_players_to_list(cantidad_players_equipo)
         ficha_class = self.seleccionar_ficha()
@@ -105,11 +101,8 @@ class TaTeTi():
         self._list_of_teams.append(team_temp)
 
     def menu_creacion_equipos(self):
-        for i in self._json_translator.list_of_languages:
-            print(f"LANGUAGE: [{i}]")
-        selected_language = input("ELIJA UN LENGUAGE DE LOS DE ARRIBA:")
-        self._json_translator.set_language(selected_language)
-        print(self._json_translator.read_json("bienvenido"))
+
+        print("Bienvenido al TaTeTi")
 
         num_equipos = self.seleccionar_numero_equipos()
 
@@ -117,7 +110,8 @@ class TaTeTi():
             print(f"Creando el equipo num : {i+1}\n")
             self.create_team()
         self._turn_handler = TurnHandler(self.list_of_teams)
-        print(self._json_translator.read_json("empezar_juego"))
+
+        print("Empieza el Juego")
 
     def empezar_partida(self):
         self._tablero.volver_a_crear_tablero()
@@ -171,7 +165,7 @@ class TaTeTi():
                 self._tablero.agregar_pieza_a_casillero_from_coordenadas(
                     coordenadas, current_pieza)
                 victory = self._tateti_victory_handler.check_victory(
-                    self._list_of_teams)
+                    self._list_of_teams, self._tablero)
             except CasilleroOcupado:
                 print("EL CASILLERO YA ESTA OCUPADO REY")
                 self.poner_pieza()  # cambiar este codigo del diablo

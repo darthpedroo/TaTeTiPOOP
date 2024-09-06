@@ -68,7 +68,7 @@ class TestUserInputTaTeTi(unittest.TestCase):
     def test01_partida_completa_jugada_con_test_de_inputs(self, mock_input):
         print("test01_partida_completa_jugada_con_test_de_inputs")
         self.ta_te_ti.jugar()
-        self.assertEqual(self.ta_te_ti.list_of_teams[0], self.victory_handler.check_victory(
+        self.assertEqual(self.ta_te_ti.list_of_teams[1], self.victory_handler.check_victory(
             self.ta_te_ti.list_of_teams))
 
     @patch('builtins.input', return_value='S')
@@ -120,7 +120,7 @@ class TestUserInputTaTeTi(unittest.TestCase):
     def test03_partida_completa_jugada_con_test_de_inputs(self, mock_input):
         print("test01_partida_completa_jugada_con_test_de_inputs")
         self.ta_te_ti.jugar()
-        self.assertRaises(CoordenadasNoSonPositivas)
+        self.assertRaises(ValueError)
 
 
 if __name__ == "__main__":

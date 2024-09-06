@@ -44,6 +44,10 @@ class Tablero(Iterable):
                 matriz[fila].append(new_tile)
         return matriz
 
+    def check_if_coordenadas_fuera_del_tablero(self, coordenadas: Coordenadas):
+        if coordenadas.x > self._columnas-1 or coordenadas.y > self._filas-1:
+            raise CoordenadasFueraDelTablero()
+
     def get_specific_casillero_from_coordenadas(self, coordenadas: Coordenadas) -> Casillero:
         """Devuelve un casillero del tablero en base a coordenadas específicas
         Args:
@@ -52,11 +56,20 @@ class Tablero(Iterable):
         Returns:
             Casillero: (Casillero)
         """
-        if coordenadas.x > self._columnas or coordenadas.y > self._filas:
-            raise CoordenadasFueraDelTablero()
+        self.check_if_coordenadas_fuera_del_tablero(coordenadas)
 
         # IMPORTANTE. CODE SMELL!!!!!! FIJARSE PQ ESTA AL REVES :v. puede que sea el iterador :V
         return self._tablero_matriz[coordenadas.y][coordenadas.x]
+
+    def get_casillero_up_neighbour(self, casillero: Casillero):
+        coordenadas_up_neighbour = Coordenadas(
+            casillero.columna, casillero.fila-1)
+        return self.get_specific_casillero_from_coordenadas(coordenadas_up_neighbour)
+
+    def get_casillero_down_neighbour(self, casillero: Casillero):
+        coordenadas_up_neighbour = Coordenadas(
+            casillero.columna, casillero.fila+1)
+        return self.get_specific_casillero_from_coordenadas(coordenadas_up_neighbour)
 
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)
