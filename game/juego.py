@@ -83,13 +83,18 @@ class TaTeTi():
             ficha_jugador_str = input(
                 "Ingrese la ficha que quiere: \n").upper()
 
+            # Search for the selected piece based on the identifier provided by the user
             for ficha2 in self._list_of_possible_pieces:
                 if ficha2 not in self._list_of_used_pieces:
                     if ficha2.identificador == ficha_jugador_str:
                         self._list_of_used_pieces.append(ficha2)
-                        return ficha2
-            print("ELIJA CORRECTAMENTE EL IDENTIFICADOR")
-            self.seleccionar_ficha()
+                        ficha_class = ficha2
+                        break  # Exit the loop once a valid ficha is found
+
+            if ficha_class is None:
+                print("ELIJA CORRECTAMENTE EL IDENTIFICADOR: \n")
+
+        return ficha_class
 
     def create_team(self):
         nombre_equipo = input(self._json_translator.read_json("nombre_equipo"))
