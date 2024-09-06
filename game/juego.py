@@ -5,7 +5,7 @@ from game.team import TeamTaTeTi
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
 from game.json_translator import JSONTranslator
 from game.coordenadas import Coordenadas
-from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasSonStr, CoordenadasNoSonPositivas
 from game.player import Player
 from game.turn_handler import TurnHandler
 
@@ -28,6 +28,7 @@ class TaTeTi():
         self._language = language
         self._json_translator = JSONTranslator()
         self._json_translator.set_language(language)  # Codigo oloroso
+        self._turn_handler = None
 
     @property
     def list_of_teams(self):
@@ -78,8 +79,9 @@ class TaTeTi():
                 if ficha not in self._list_of_used_pieces:
                     print(ficha.nombre, ficha.symbol,
                           "USAR ESTE IDENTIFICADOR PARA SELECCIONARLA: ", ficha.identificador, "\n")
-            ficha_jugador_str = input(self._json_translator.read_json(
-                "ficha_jugador_str")).capitalize()
+
+            ficha_jugador_str = input(
+                "Ingrese la ficha que quiere: \n").upper()
 
             for ficha2 in self._list_of_possible_pieces:
                 if ficha2 not in self._list_of_used_pieces:
@@ -109,6 +111,7 @@ class TaTeTi():
         for i in range(num_equipos):
             print(f"Creando el equipo num : {i+1}\n")
             self.create_team()
+        self._turn_handler = TurnHandler(self.list_of_teams)
         print(self._json_translator.read_json("empezar_juego"))
 
     def empezar_partida(self):
@@ -133,18 +136,32 @@ class TaTeTi():
 
     def poner_pieza(self):
         victory = False
-        turn_handler = TurnHandler(self.list_of_teams)
 
         while not victory:
-            print("Turno de :", turn_handler.current_team_turn)
-            x_input = int(input("Ingrese la columna\n"))
-            y_input = int(input("Ingrese la fila\n"))
-            current_pieza = turn_handler.current_team_turn.pieza_del_equipo
+
+            print("Turno de :", self._turn_handler.current_team_turn)
+
+            valid_x_input = False
+            valid_y_input = False
+
+            while not valid_x_input and not valid_y_input:
+                x_input = (input("Ingrese la columna\n"))
+                y_input = (input("Ingrese la fila\n"))
+                valid_x_input = self.is_input_a_valid_int(x_input)
+                valid_y_input = self.is_input_a_valid_int(y_input)
+
+            x_input = int(x_input)
+            y_input = int(y_input)
+
+            current_pieza = self._turn_handler.current_team_turn.pieza_del_equipo
             try:
                 coordenadas = Coordenadas(x_input, y_input)
-            except CoordenadasFueraDelTablero:
-                print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS")
-                self.poner_pieza()  # cambiar este codigo del diablo
+            except CoordenadasSonStr:
+                print("HA INGRESADO UN STRING ! VUELVA A INGRESAR")
+                self.poner_pieza()
+            except CoordenadasNoSonPositivas:
+                print("ERROR, INGRESE COORDENADAS POSITIVAS. ")
+                self.poner_pieza()
             try:
                 self._tablero.agregar_pieza_a_casillero_from_coordenadas(
                     coordenadas, current_pieza)
@@ -153,7 +170,11 @@ class TaTeTi():
             except CasilleroOcupado:
                 print("EL CASILLERO YA ESTA OCUPADO REY")
                 self.poner_pieza()  # cambiar este codigo del diablo
-            turn_handler.next_turn()
+            except CoordenadasFueraDelTablero:
+                print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS")
+                self.poner_pieza()  # cambiar este codigo del diablo
+
+            self._turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
         self.volver_a_jugar()
 
