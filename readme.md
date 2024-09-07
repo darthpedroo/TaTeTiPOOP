@@ -1,17 +1,21 @@
 # TaTeTiPoo
 
-TaTeTiPoo es un juego de tateti hecho en python orientado a objetos
+TaTeTiPoo is an object oriented prgogramming TicTacToe game made in python
 
 
-## Installation
+## Features
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+- Supports different game piece types (e.g., circles, crosses, etc.)
+- Dynamic Board (4x4, 3x3, 20x20)
+- Allows as many teams as wanted to play a match
+- Dynamic victory conditions (e.g., 3 in a row, 4 in a row)
 
-```bash
-pip install coverage
-```
+## Requirements
 
-## Tests
+- Python 3.10+
+- [pip](https://pip.pypa.io/en/stable/)
+
+## Testing 
 ### Prerequisites
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pytest.
