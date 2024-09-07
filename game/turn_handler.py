@@ -1,9 +1,6 @@
 from game.team import TeamTaTeTi
 from game.fichas import FichaCruz
 
-# TeamTurnHandler
-# PlayerTurnHandler
-
 
 class TurnHandler():
     def __init__(self, teams: list[TeamTaTeTi]):
@@ -22,6 +19,12 @@ class TurnHandler():
         return self._teams[0]
 
     def sort_list_of_teams_based_on_turns(self):
+        """Ordena la lista de equipos segun el turno, el primero siempre es el equipo que tiene la cruz. 
+            Pero si se eligieron simbolos que no son la cruz, se elige el primer equipo en la lista de equipos
+
+            Returns:
+            list[Team]: Devuelve la lista ordenada de los equipos
+            """
         sorted_list_of_teams = []
         team_with_cross_piece = self.get_team_with_cross_piece()
         # El primer turno siempre lo tiene el equipo con la pieza X
@@ -33,6 +36,8 @@ class TurnHandler():
         return sorted_list_of_teams
 
     def next_turn(self):
+        """Avanza al siguiente turno en el ciclo de equipos.
+        """
         if self._turn_index < len(self._teams)-1:
             self._turn_index += 1
         elif self._turn_index >= len(self._teams)-1:

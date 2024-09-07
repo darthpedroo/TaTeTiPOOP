@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from game.tablero import Tablero
 from game.procesador import ProcesadorTableroConsola
-from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.victoryhandler import TaTeTiVictoryHandler
 from game.juego import TaTeTi
 from game.fichas import FichaCruz, FichaSigma
 from game.coordenadas import Coordenadas

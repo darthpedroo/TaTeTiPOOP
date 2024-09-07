@@ -1,4 +1,5 @@
 def is_input_a_valid_int(input):
+    """Devuelve True  si un input es un entero > 0, de lo contrario devuele False"""
     try:
         int(input)
     except ValueError:
@@ -11,6 +12,7 @@ def is_input_a_valid_int(input):
 
 
 def is_input_greater_than_zero(input):
+    """Devuele true si un input es >= 0, de lo contrario devuelve False"""
     try:
         int(input)
     except ValueError:

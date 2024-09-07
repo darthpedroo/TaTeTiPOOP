@@ -1,7 +1,7 @@
 from game.juego import TaTeTi
 from game.procesador import ProcesadorTableroConsola
 from game.tablero import Tablero
-from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.victoryhandler import TaTeTiVictoryHandler
 
 tablero_ta_te_ti = Tablero(3, 3)
 tablero_chess = Tablero(8, 8)

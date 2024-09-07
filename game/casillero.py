@@ -3,6 +3,15 @@ from game.exceptions import CasilleroOcupado
 
 
 class Casillero():
+    """
+    Representa un casillero del Tablero
+    Attributes:
+        columna (int)
+        fila (int)
+        symbol (str)
+        pieza (Placeable | None)
+    """
+
     def __init__(self, columna, fila):
         self._columna = columna
         self._fila = fila

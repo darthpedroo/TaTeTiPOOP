@@ -1,6 +1,6 @@
 from abc import ABC
 from game.tablero import Tablero
-from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
 from game.coordenadas import Coordenadas
@@ -153,7 +153,11 @@ class TaTeTi():
                 victory = self._tateti_victory_handler.check_victory(
                     self._list_of_teams, self._tablero, casillero)
 
-                print("VICTORY_ ", victory)
+                if victory is not None:
+                    if isinstance(victory, list):
+                        print("EMPATE !")
+                    else:
+                        print("GANADOR EQUIPO: ", victory)
 
             except CasilleroOcupado:
                 print("EL CASILLERO YA ESTA OCUPADO REY\n")

@@ -7,7 +7,7 @@ from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, Coorde
 from game.juego import TaTeTi
 from game.procesador import ProcesadorTableroConsola
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma
-from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.player import Player
 
@@ -64,9 +64,6 @@ class TestTaTeTi(unittest.TestCase):
 
         self.assertEqual(
             self.teams[0], self.ta_te_ti._tateti_victory_handler.check_victory(self.ta_te_ti.list_of_teams, self.tablero_ta_te_ti, last_casillero))
-
-
-
 
 
 if __name__ == "__main__":

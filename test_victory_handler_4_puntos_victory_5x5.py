@@ -7,7 +7,7 @@ from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, Coorde
 from game.juego import TaTeTi
 from game.procesador import ProcesadorTableroConsola
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma
-from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.player import Player
 
