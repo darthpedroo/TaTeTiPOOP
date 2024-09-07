@@ -7,46 +7,31 @@ from game.coordenadas import Coordenadas
 from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasSonStr, CoordenadasNoSonPositivas
 from game.player import Player
 from game.turn_handler import TurnHandler
+from game.helpers import is_input_a_valid_int, is_input_greater_than_zero
 
 
 class TaTeTi():
-    def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler, language: str = "ES") -> None:
+    def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler) -> None:
         self._tablero = tablero
         self._procesador_tablero = procesador_tablero
         self._procesador_tablero.tablero_matriz = tablero  # CODE APESTOSITO
         self._tateti_victory_handler = victory_handler
         self._list_of_teams = []
-
         self._list_of_possible_pieces = [
             FichaCirculo(), FichaSigma(), FichaCruz(), FichaVater()]
-
         self._list_of_used_pieces = []
-
-        # Language
-        self._language = language
         self._turn_handler = None
 
     @property
     def list_of_teams(self):
         return self._list_of_teams
 
-    def is_input_a_valid_int(self, input):
-        try:
-            int(input)
-        except ValueError:
-            print("INGRESA UN NÚMERO, NO UN TEXTO")
-            return False
-        if int(input) < 0:
-            print("INGRESA UN NÚMERO POSITIVO")
-            return False
-        return True
-
     def seleccionar_numero_equipos(self):
         valid_input = False
         while not valid_input:
             num_equipos = (
-                input("Cuántos equipos van a jugar?"))
-            valid_input = self.is_input_a_valid_int(num_equipos)
+                input("Cuántos equipos van a jugar?\n"))
+            valid_input = is_input_greater_than_zero(num_equipos)
         num_equipos = int(num_equipos)
         return num_equipos
 
@@ -55,7 +40,7 @@ class TaTeTi():
         while not valid_input:
             num_jugadores = input(
                 "INGRESAR CANTIDAD DE JUGADORES DEL EQUIPO\n")
-            valid_input = self.is_input_a_valid_int(num_jugadores)
+            valid_input = is_input_a_valid_int(num_jugadores)
         num_jugadores = int(num_jugadores)
         return num_jugadores
 
@@ -79,7 +64,6 @@ class TaTeTi():
             ficha_jugador_str = input(
                 "Ingrese la ficha que quiere: \n").upper()
 
-            # Search for the selected piece based on the identifier provided by the user
             for ficha2 in self._list_of_possible_pieces:
                 if ficha2 not in self._list_of_used_pieces:
                     if ficha2.identificador == ficha_jugador_str:
@@ -93,7 +77,7 @@ class TaTeTi():
         return ficha_class
 
     def create_team(self):
-        nombre_equipo = input("Ingrese el nombre del equipo")
+        nombre_equipo = input("Ingrese el nombre del equipo\n")
         cantidad_players_equipo = self.seleccionar_numero_jugadores_por_equipo()
         player_name_list = self.add_players_to_list(cantidad_players_equipo)
         ficha_class = self.seleccionar_ficha()
@@ -102,7 +86,7 @@ class TaTeTi():
 
     def menu_creacion_equipos(self):
 
-        print("Bienvenido al TaTeTi")
+        print("Bienvenido al TaTeTi\n")
 
         num_equipos = self.seleccionar_numero_equipos()
 
@@ -112,7 +96,7 @@ class TaTeTi():
 
         self._turn_handler = TurnHandler(self.list_of_teams)
 
-        print("Empieza el Juego")
+        print("Empieza el Juego\n")
 
     def empezar_partida(self):
         self._tablero.volver_a_crear_tablero()
@@ -131,7 +115,7 @@ class TaTeTi():
         elif volver_a_jugar_input == "NO":
             print("Gracias por jugar !")
         else:
-            print("ESCRIBA CORRECTAMENTE SU INPUT")
+            print("ESCRIBA CORRECTAMENTE SU INPUT\n")
             self.volver_a_jugar()
 
     def poner_pieza(self):
@@ -139,16 +123,14 @@ class TaTeTi():
 
         while victory is None:
 
-            print("Turno de :", self._turn_handler.current_team_turn)
-
             valid_x_input = False
             valid_y_input = False
 
             while not valid_x_input and not valid_y_input:
                 x_input = (input("Ingrese la columna\n"))
                 y_input = (input("Ingrese la fila\n"))
-                valid_x_input = self.is_input_a_valid_int(x_input)
-                valid_y_input = self.is_input_a_valid_int(y_input)
+                valid_x_input = is_input_a_valid_int(x_input)
+                valid_y_input = is_input_a_valid_int(y_input)
 
             x_input = int(x_input)
             y_input = int(y_input)
@@ -157,10 +139,10 @@ class TaTeTi():
             try:
                 coordenadas = Coordenadas(x_input, y_input)
             except CoordenadasSonStr:
-                print("HA INGRESADO UN STRING ! VUELVA A INGRESAR")
+                print("HA INGRESADO UN STRING ! VUELVA A INGRESAR\n")
                 self.poner_pieza()
             except CoordenadasNoSonPositivas:
-                print("ERROR, INGRESE COORDENADAS POSITIVAS. ")
+                print("ERROR, INGRESE COORDENADAS POSITIVAS. \n")
                 self.poner_pieza()
             try:
                 self._tablero.agregar_pieza_a_casillero_from_coordenadas(
@@ -174,10 +156,10 @@ class TaTeTi():
                 print("VICTORY_ ", victory)
 
             except CasilleroOcupado:
-                print("EL CASILLERO YA ESTA OCUPADO REY")
+                print("EL CASILLERO YA ESTA OCUPADO REY\n")
                 self.poner_pieza()  # cambiar este codigo del diablo
             except CoordenadasFueraDelTablero:
-                print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS")
+                print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS\n")
                 self.poner_pieza()  # cambiar este codigo del diablo
 
             self._turn_handler.next_turn()

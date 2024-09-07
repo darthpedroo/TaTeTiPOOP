@@ -2,10 +2,10 @@ import unittest
 from unittest.mock import patch
 from game.tablero import Tablero
 from game.procesador import ProcesadorTableroConsola
-from game.victoryhandler import TaTeTiVictoryHandler
+from game.victoryhandler2 import TaTeTiVictoryHandler
 from game.juego import TaTeTi
 from game.fichas import FichaCruz, FichaSigma
-from game.exceptions import CoordenadasNoSonPositivas
+from game.coordenadas import Coordenadas
 
 
 def get_user_name():
@@ -25,7 +25,6 @@ class TestUserInputTaTeTi(unittest.TestCase):
                                self.procesador_tablero_consola, self.victory_handler)
 
     @patch('builtins.input', side_effect=[
-        'ES',          # LENGUAJE
         '2',           # NUMERO DE EQUIPOS QUE VAN A JUGAR
         # COMIENZA LA ELECCION DEL EQUIPO 1
         'Mega Rizz Team 1',  # NOMBRE TEAM 1
@@ -68,8 +67,10 @@ class TestUserInputTaTeTi(unittest.TestCase):
     def test01_partida_completa_jugada_con_test_de_inputs(self, mock_input):
         print("test01_partida_completa_jugada_con_test_de_inputs")
         self.ta_te_ti.jugar()
+        last_casillero = self.tablero_ta_te_ti.get_specific_casillero_from_coordenadas(
+            Coordenadas(2, 0))
         self.assertEqual(self.ta_te_ti.list_of_teams[1], self.victory_handler.check_victory(
-            self.ta_te_ti.list_of_teams))
+            self.ta_te_ti.list_of_teams, self.tablero_ta_te_ti, last_casillero))
 
     @patch('builtins.input', return_value='S')
     def test_02_seleccionar_ficha(self, mock_input):
@@ -77,7 +78,6 @@ class TestUserInputTaTeTi(unittest.TestCase):
         self.assertEqual(ficha, FichaSigma())
 
     @patch('builtins.input', side_effect=[
-        'ES',          # LENGUAJE
         '2',           # NUMERO DE EQUIPOS QUE VAN A JUGAR
         # COMIENZA LA ELECCION DEL EQUIPO 1
         'Mega Rizz Team 1',  # NOMBRE TEAM 1
