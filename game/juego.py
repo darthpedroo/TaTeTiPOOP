@@ -105,9 +105,23 @@ class TaTeTi():
         return ficha_class
 
     def create_team(self):
-        """Metodo para crear un equipo
-        """
-        nombre_equipo = input("Ingrese el nombre del equipo\n")
+        """Método para crear un equipo"""
+
+        valid_name = False
+        while not valid_name:
+            nombre_equipo = input("Ingrese el nombre del equipo\n")
+            equipo_existe = False
+            for team in self._list_of_teams:
+                if team.nombre == nombre_equipo:
+                    equipo_existe = True
+                    break
+
+            if equipo_existe:
+                print("INGRESE UN NOMBRE DISTINTO AL DE SUS ADVERSARIOS")
+            else:
+                valid_name = True
+                break
+
         cantidad_players_equipo = self.seleccionar_numero_jugadores_por_equipo()
         player_name_list = self.add_players_to_list(cantidad_players_equipo)
         ficha_class = self.seleccionar_ficha()
