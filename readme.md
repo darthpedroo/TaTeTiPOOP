@@ -68,6 +68,49 @@ Expected Output:
 Wrote HTML report to htmlcov\index.html
 ```
 
+## Docker
+
+You can run this project using Docker too.
+
+### Prerequisites
+- [Docker]([https://pip.pypa.io/en/stable/](https://www.docker.com/get-started/)) installed in your local system
+
+### Build the Docker Image
+
+```bash
+docker build -t tateti-game .
+```
+
+### Run The Game
+```bash
+docker run -it tateti-game
+```
+
+### Run tests inside Docker
+
+To run the test:
+```bash
+docker run -it tateti-game python -m pytest
+```
+To generate coverage report:
+```bash
+docker run -it tateti-game coverage run -m pytest
+```
+
+To view The coverage report:
+```bash
+docker run -it tateti-game coverage report
+```
+To generate an HTML coverage report:
+```bash
+docker run -it tateti-game coverage html
+```
+
+### Clean Docker Containers:
+```bash
+docker container prune
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
