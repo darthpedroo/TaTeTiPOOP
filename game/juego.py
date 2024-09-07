@@ -2,7 +2,7 @@ from abc import ABC
 from game.tablero import Tablero
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
-from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
+from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater, Placeable
 from game.coordenadas import Coordenadas
 from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasSonStr, CoordenadasNoSonPositivas
 from game.player import Player
@@ -11,6 +11,9 @@ from game.helpers import is_input_a_valid_int, is_input_greater_than_zero
 
 
 class TaTeTi():
+    """Clase que maneja la lógica y los Inputs del Juego TaTeTi
+    """
+
     def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler) -> None:
         self._tablero = tablero
         self._procesador_tablero = procesador_tablero
@@ -26,7 +29,12 @@ class TaTeTi():
     def list_of_teams(self):
         return self._list_of_teams
 
-    def seleccionar_numero_equipos(self):
+    def seleccionar_numero_equipos(self) -> int:
+        """Metodo para seleccionar el numero de equipos
+
+        Returns:
+            int: Numero de equipos
+        """
         valid_input = False
         while not valid_input:
             num_equipos = (
@@ -35,23 +43,43 @@ class TaTeTi():
         num_equipos = int(num_equipos)
         return num_equipos
 
-    def seleccionar_numero_jugadores_por_equipo(self):
+    def seleccionar_numero_jugadores_por_equipo(self) -> int:
+        """Metododo para seleccionar el número de jugadores por equipo
+
+        Returns:
+            int: Numero de jugadores
+        """
+
         valid_input = False
         while not valid_input:
             num_jugadores = input(
                 "INGRESAR CANTIDAD DE JUGADORES DEL EQUIPO\n")
-            valid_input = is_input_a_valid_int(num_jugadores)
+            valid_input = is_input_greater_than_zero(num_jugadores)
         num_jugadores = int(num_jugadores)
         return num_jugadores
 
     def add_players_to_list(self, cantidad_player_equipo: int) -> list[Player]:
+        """Metodo para agregar una cantidad especifica de jugadores a la lista de equipos
+
+        Args:
+            cantidad_player_equipo (int): Cantidad de jugadores para meter al equipo
+
+        Returns:
+            list[Player]: Lista con los jugadores del equipo
+        """
         player_name_list = []
         for i in range(cantidad_player_equipo):
             name = input(f"Ingrese el nombre del jugador {i+1} \n")
             player_name_list.append(name)
         return player_name_list
 
-    def seleccionar_ficha(self):
+    def seleccionar_ficha(self) -> Placeable:
+        """Metodo para seleccionar una ficha
+
+        Returns:
+            Placeable: La ficha seleccionada
+        """
+
         ficha_class = None
 
         while ficha_class is None:
@@ -77,6 +105,8 @@ class TaTeTi():
         return ficha_class
 
     def create_team(self):
+        """Metodo para crear un equipo
+        """
         nombre_equipo = input("Ingrese el nombre del equipo\n")
         cantidad_players_equipo = self.seleccionar_numero_jugadores_por_equipo()
         player_name_list = self.add_players_to_list(cantidad_players_equipo)
@@ -85,6 +115,8 @@ class TaTeTi():
         self._list_of_teams.append(team_temp)
 
     def menu_creacion_equipos(self):
+        """Menu que muestra la creación de los equipos
+        """
 
         print("Bienvenido al TaTeTi\n")
 
@@ -99,12 +131,16 @@ class TaTeTi():
         print("Empieza el Juego\n")
 
     def empezar_partida(self):
+        """Metodo para empezar la partida
+        """
         self._tablero.volver_a_crear_tablero()
         self._procesador_tablero.dibujar_tablero()
         self._list_of_used_pieces = []
         self.poner_pieza()
 
     def volver_a_jugar(self):
+        """Metodo para volver a jugar
+        """
         volver_a_jugar_input = input(
             "VOLVER A JUGAR?:\n 1) SI\n 2) NO\n").upper()
 
@@ -119,6 +155,8 @@ class TaTeTi():
             self.volver_a_jugar()
 
     def poner_pieza(self):
+        """Logica para poner una pieza en el tablero
+        """
         victory = None
 
         while victory is None:
@@ -171,6 +209,7 @@ class TaTeTi():
         self.volver_a_jugar()
 
     def jugar(self):
+        """Metodo para ejecutar el juego TaTeTi"""
         self.menu_creacion_equipos()
         self._procesador_tablero.dibujar_tablero()
         self.poner_pieza()
