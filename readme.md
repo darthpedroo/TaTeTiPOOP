@@ -62,7 +62,9 @@ To generate convert the report into an html run:
 
 ```bash
 coverage html
-
+```
+Expected Output:
+```bash
 Wrote HTML report to htmlcov\index.html
 ```
 
