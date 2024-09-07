@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from game.fichas import Placeable
 from game.coordenadas import Coordenadas
 from game.casillero import Casillero
-from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasNoSonPositivas
+from game.exceptions import CoordenadasFueraDelTablero, CoordenadasNoSonPositivas
 
 
 class Tablero(Iterable):
@@ -80,7 +80,6 @@ class Tablero(Iterable):
         """
         self.check_if_coordenadas_fuera_del_tablero(coordenadas)
 
-        # IMPORTANTE. CODE SMELL!!!!!! FIJARSE PQ ESTA AL REVES :v. puede que sea el iterador :V
         return self._tablero_matriz[coordenadas.y][coordenadas.x]
 
     def get_casillero_neighbour_exception_handler(self, casillero: Casillero, fila_index: int, columna_modifier: int):

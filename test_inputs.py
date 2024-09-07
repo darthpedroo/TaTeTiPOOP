@@ -4,7 +4,7 @@ from game.tablero import Tablero
 from game.procesador import ProcesadorTableroConsola
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.juego import TaTeTi
-from game.fichas import FichaCruz, FichaSigma
+from game.fichas import  FichaSigma
 from game.coordenadas import Coordenadas
 
 

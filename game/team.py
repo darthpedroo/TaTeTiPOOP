@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
-from game.fichas import Placeable, FichaCirculo
+from abc import ABC
+from game.fichas import Placeable
 from game.player import Player
 
 

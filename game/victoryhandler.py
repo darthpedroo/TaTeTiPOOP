@@ -1,5 +1,5 @@
 from abc import ABC
-from game.tablero import Tablero, Coordenadas
+from game.tablero import Tablero
 from game.team import TeamTaTeTi
 from game.casillero import Casillero
 from game.fichas import Placeable
@@ -19,8 +19,6 @@ class TaTeTiVictoryHandler(VictoryHandler):
         current_points (int): La cantidad de puntos actuales.
 
     """
-
-    # Hacer que teams sea un args
 
     def __init__(self, points_to_win: int):
         self._points_to_win = points_to_win - 1

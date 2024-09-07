@@ -5,7 +5,6 @@ class ProcesadorTableroConsola():
     """Clase que sirve para procesar la Clase Tablero en la consola"""
 
     def __init__(self, tablero: Tablero | None = None) -> None:
-        # Puede ser None Esto? Porque no deberia serlo aunque le hago dsp el setter
         self._tablero_matriz = tablero
 
     @property

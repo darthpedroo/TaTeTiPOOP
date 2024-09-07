@@ -1,4 +1,3 @@
-from abc import ABC
 from game.tablero import Tablero
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
@@ -17,7 +16,7 @@ class TaTeTi():
     def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler) -> None:
         self._tablero = tablero
         self._procesador_tablero = procesador_tablero
-        self._procesador_tablero.tablero_matriz = tablero  # CODE APESTOSITO
+        self._procesador_tablero.tablero_matriz = tablero  
         self._tateti_victory_handler = victory_handler
         self._list_of_teams = []
         self._list_of_possible_pieces = [
@@ -97,7 +96,7 @@ class TaTeTi():
                     if ficha2.identificador == ficha_jugador_str:
                         self._list_of_used_pieces.append(ficha2)
                         ficha_class = ficha2
-                        break  # Exit the loop once a valid ficha is found
+                        break
 
             if ficha_class is None:
                 print("ELIJA CORRECTAMENTE EL IDENTIFICADOR: \n")
@@ -213,10 +212,10 @@ class TaTeTi():
 
             except CasilleroOcupado:
                 print("EL CASILLERO YA ESTA OCUPADO REY\n")
-                self.poner_pieza()  # cambiar este codigo del diablo
+                self.poner_pieza()
             except CoordenadasFueraDelTablero:
                 print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS\n")
-                self.poner_pieza()  # cambiar este codigo del diablo
+                self.poner_pieza() 
 
             self._turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
