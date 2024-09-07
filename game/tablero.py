@@ -63,32 +63,38 @@ class Tablero(Iterable):
 
     def get_casillero_neighbour_exception_handler(self, casillero: Casillero, fila_index: int, columna_modifier: int):
         try:
-            coordenadas_up_neighbour = Coordenadas(  # HACER QUE ESE 0 SEA EL PARAMETRO X SI SE NECESITA EL UP_DOWN_LEFT_RIGHT_ETC......
-                casillero.columna + columna_modifier, casillero.fila+fila_index)  # OJO CON ESTE, MODIFICARLO EN LA IMPLEMENTACION
+            coordenadas_up_neighbour = Coordenadas(
+                casillero.columna + columna_modifier, casillero.fila+fila_index)
             return self.get_specific_casillero_from_coordenadas(coordenadas_up_neighbour)
         except CoordenadasFueraDelTablero:
             return None
         except CoordenadasNoSonPositivas:
             return None
 
-    def get_casillero_up_neighbour(self, casillero: Casillero, fila_index: int):
-        return self.get_casillero_neighbour_exception_handler(casillero, -fila_index, 0)
+    def get_casillero_up_neighbour(self, casillero: Casillero, fila_index: int, columa_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, -fila_index, columa_index)
 
-    def get_casillero_down_neighbour(self, casillero: Casillero, fila_index: int):
-        return self.get_casillero_neighbour_exception_handler(casillero, +fila_index, 0)
+    def get_casillero_down_neighbour(self, casillero: Casillero, fila_index: int, columa_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, +fila_index, columa_index)
 
     # TESTEAR ESTE
-    def get_casillero_left_neighbour(self, casillero: Casillero, columna_index: int):
-        return self.get_casillero_neighbour_exception_handler(casillero, 0, -columna_index)
+    def get_casillero_left_neighbour(self, casillero: Casillero,  fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, fila_index, -columna_index)
 
-        coordenadas_left_neighbour = Coordenadas(
-            casillero.columna - 1, casillero.fila)  # IMPLEMENTAR ESTO EN EL get_casillero_neighbour_exception_handler. H
-        return self.get_specific_casillero_from_coordenadas(coordenadas_left_neighbour)
+    def get_casillero_right_neighbour(self, casillero: Casillero, fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, fila_index, +columna_index)
 
-    def get_casillero_right_neighbour(self, casillero: Casillero):
-        coordenadas_right_neighbour = Coordenadas(
-            casillero.columna + 1, casillero.fila)
-        return self.get_specific_casillero_from_coordenadas(coordenadas_right_neighbour)
+    def get_casillero_top_left_neighbour(self, casillero: Casillero, fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, -fila_index, - columna_index)
+
+    def get_casillero_down_right_neighbour(self, casillero: Casillero, fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, +fila_index, + columna_index)
+
+    def get_casillero_down_left_neighbour(self, casillero: Casillero, fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, +fila_index, - columna_index)
+
+    def get_casillero_top_right_neighbour(self, casillero: Casillero, fila_index: int, columna_index: int):
+        return self.get_casillero_neighbour_exception_handler(casillero, -fila_index, + columna_index)
 
     def agregar_pieza_a_casillero_from_coordenadas(self, coordenadas: Coordenadas, pieza: Placeable):
         casillero = self.get_specific_casillero_from_coordenadas(coordenadas)

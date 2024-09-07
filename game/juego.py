@@ -1,6 +1,6 @@
 from abc import ABC
 from game.tablero import Tablero
-from game.victoryhandler import TaTeTiVictoryHandler
+from game.victoryhandler2 import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.fichas import FichaCirculo, FichaCruz, FichaSigma, FichaVater
 from game.coordenadas import Coordenadas
@@ -109,6 +109,7 @@ class TaTeTi():
         for i in range(num_equipos):
             print(f"Creando el equipo num : {i+1}\n")
             self.create_team()
+
         self._turn_handler = TurnHandler(self.list_of_teams)
 
         print("Empieza el Juego")
@@ -134,9 +135,9 @@ class TaTeTi():
             self.volver_a_jugar()
 
     def poner_pieza(self):
-        victory = False
+        victory = None
 
-        while not victory:
+        while victory is None:
 
             print("Turno de :", self._turn_handler.current_team_turn)
 
@@ -164,8 +165,14 @@ class TaTeTi():
             try:
                 self._tablero.agregar_pieza_a_casillero_from_coordenadas(
                     coordenadas, current_pieza)
+                casillero = self._tablero.get_specific_casillero_from_coordenadas(
+                    coordenadas)
+
                 victory = self._tateti_victory_handler.check_victory(
-                    self._list_of_teams, self._tablero)
+                    self._list_of_teams, self._tablero, casillero)
+
+                print("VICTORY_ ", victory)
+
             except CasilleroOcupado:
                 print("EL CASILLERO YA ESTA OCUPADO REY")
                 self.poner_pieza()  # cambiar este codigo del diablo

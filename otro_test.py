@@ -8,97 +8,78 @@ from game.fichas import FichaCirculo, FichaCruz
 from game.victoryhandler2 import TaTeTiVictoryHandler
 from game.team import TeamTaTeTi
 from game.player import Player
+import unittest
+from unittest.mock import patch
+
+from game.tablero import Tablero
+from game.coordenadas import Coordenadas
+from game.exceptions import CoordenadasFueraDelTablero, CasilleroOcupado, CoordenadasNoSonPositivas, CoordenadasSonStr
+from game.juego import TaTeTi
+from game.procesador import ProcesadorTableroConsola
+from game.fichas import FichaCirculo, FichaCruz, FichaSigma
+from game.victoryhandler2 import TaTeTiVictoryHandler
+from game.team import TeamTaTeTi
+from game.player import Player
 
 
-class TestTaTeTiVictoryHandler3puntosVictory3x3(unittest.TestCase):
+class TestUserInputTaTeTi(unittest.TestCase):
+
     def setUp(self):
         self.tablero_ta_te_ti = Tablero(3, 3)
-        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
-            "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
+        self.procesador_tablero_consola = ProcesadorTableroConsola()
+
         self.victory_handler = TaTeTiVictoryHandler(
             3)
-        self.procesador_tablero_consola = ProcesadorTableroConsola(
-            self.tablero_ta_te_ti)
         self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
                                self.procesador_tablero_consola, self.victory_handler)
-        self.ta_te_ti._list_of_teams = self.teams
 
-    def test_01_1_columna_3_del_tablero_completa_equipo_2(self):
-        print("test_01_1_columna_3_del_tablero_completa_equipo_2")
-        current_pieza = self.teams[1].pieza_del_equipo
-        enemy_pieza = self.teams[0].pieza_del_equipo
-        x = 2
-        y1 = 0
-        y2 = 1
-        y3 = 2
-        mov1_coordenadas = Coordenadas(x, y1)
-        mov2_coordenadas = Coordenadas(x, y2)
-        mov3_coordenadas = Coordenadas(x, y3)
-        mov4_coordenadas = Coordenadas(0, 2)
-
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov1_coordenadas, current_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov4_coordenadas, enemy_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov2_coordenadas, current_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov3_coordenadas, current_pieza)
-        self.procesador_tablero_consola.dibujar_tablero()
-
+    @patch('builtins.input', side_effect=[
+        '2',           # NUMERO DE EQUIPOS QUE VAN A JUGAR
+        # COMIENZA LA ELECCION DEL EQUIPO 1
+        'Mega Rizz Team 1',  # NOMBRE TEAM 1
+        '2',           # #CANTIDAD JUGADORES TEAM 1
+        'Porky Player 1',    # NOMBRE PLAYER 1
+        'Juanitrox Player 2',   # NOMBRE PLAYER2
+        'V',           # FICHA ELEGIDA POR EL TEAM 1
+        # COMIENZA LA ELECCION DEL EQUIPO 2
+        'Sigma Sigma on The Wall Team 2',      # NOMBRE TEAM 2
+        '2',           # CANTIDAD JUGADORES TEAM 2
+        'Batman',    # NOMBRE PLAYER 1
+        'Iron main',    # NOMBRE PLAYER 2
+        'S',           # FICHA ELEGIDA POR EL TEAM 2
+        # COMIENZAN LOS INPUTS DE SELECCION DE PIEZAS
+        '0',
+        '0',
+        '0',
+        '1',
+        '1',
+        '0',
+        '1',
+        '1',
+        '2',
+        '0',
+        'dop',  # ME TIRA ERROR EL INPUT
+        'si',
+        # JUEGO LA MISMA PARTIDA DEVUELTA
+        '0',
+        '0',
+        '0',
+        '1',
+        '1',
+        '0',
+        '1',
+        '1',
+        '2',
+        '0',
+        'no'
+    ])
+    def test01_partida_completa_jugada_con_test_de_inputs(self, mock_input):
+        print("test01_partida_completa_jugada_con_test_de_inputs")
+        self.ta_te_ti.jugar()
         last_casillero = self.tablero_ta_te_ti.get_specific_casillero_from_coordenadas(
-            mov3_coordenadas)
-
-        self.assertEqual(
-            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams, self.tablero_ta_te_ti, last_casillero))
-
-
-class TaTeTiVictoryHandler4puntosVictory5x5(unittest.TestCase):
-    def setUp(self):
-        puntos_para_ganar = 4
-        self.tablero_ta_te_ti = Tablero(5, 5)
-        self.teams = [TeamTaTeTi("Papu Gigante", FichaCruz(), [Player("Porky")]), TeamTaTeTi(
-            "Mega Rizzlers", FichaCirculo(), [Player("Beni")])]
-        self.victory_handler = TaTeTiVictoryHandler(
-            puntos_para_ganar)
-        self.procesador_tablero_consola = ProcesadorTableroConsola(
-            self.tablero_ta_te_ti)
-        self.ta_te_ti = TaTeTi(self.tablero_ta_te_ti,
-                               self.procesador_tablero_consola, self.victory_handler)
-        self.ta_te_ti._list_of_teams = self.teams
-
-    def test_01_check_left_diagonal_win(self):
-        print("test_01_check_left_diagonal_win")
-        current_pieza = self.teams[1].pieza_del_equipo
-        enemy_pieza = self.teams[0].pieza_del_equipo
-        x = 2
-        y1 = 0
-        y2 = 1
-        y3 = 2
-        y4 = 3
-
-        mov1_coordenadas = Coordenadas(x, y1)
-        mov2_coordenadas = Coordenadas(x, y2)
-        mov3_coordenadas = Coordenadas(x, y3)
-        mov4_coordenadas = Coordenadas(x, y4)
-
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov1_coordenadas, current_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov2_coordenadas, current_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov3_coordenadas, current_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            Coordenadas(2, 4), enemy_pieza)
-        self.tablero_ta_te_ti.agregar_pieza_a_casillero_from_coordenadas(
-            mov4_coordenadas, current_pieza)
-        self.procesador_tablero_consola.dibujar_tablero()
-
-        last_casillero = self.tablero_ta_te_ti.get_specific_casillero_from_coordenadas(
-            mov3_coordenadas)
-
-        self.assertEqual(
-            self.teams[1], self.victory_handler.check_victory(self.ta_te_ti.list_of_teams, self.tablero_ta_te_ti, last_casillero))
+            Coordenadas(2, 0))
+        self.assertEqual(self.ta_te_ti.list_of_teams[1], self.victory_handler.check_victory(
+            self.ta_te_ti.list_of_teams, self.tablero_ta_te_ti, last_casillero))
 
 
 if __name__ == "__main__":
