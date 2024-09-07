@@ -15,6 +15,21 @@ TaTeTiPoo is an object oriented prgogramming TicTacToe game made in python
 - Python 3.10+
 - [pip](https://pip.pypa.io/en/stable/)
 
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-repo/tatetipoo.git
+   cd tatetipoo
+   ```
+
+2. To run the game:
+```bash
+   python main.py
+```
+
+
 ## Testing 
 ### Prerequisites
 
