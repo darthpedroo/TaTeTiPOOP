@@ -58,7 +58,7 @@ To generate coverage report run:
 coverage report
 ```
 
-To generate convert the report into an html run:
+To convert the report into an html run:
 
 ```bash
 coverage html
