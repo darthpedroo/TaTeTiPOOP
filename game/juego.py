@@ -16,7 +16,7 @@ class TaTeTi():
     def __init__(self, tablero: Tablero, procesador_tablero, victory_handler: TaTeTiVictoryHandler) -> None:
         self._tablero = tablero
         self._procesador_tablero = procesador_tablero
-        self._procesador_tablero.tablero_matriz = tablero  
+        self._procesador_tablero.tablero_matriz = tablero
         self._tateti_victory_handler = victory_handler
         self._list_of_teams = []
         self._list_of_possible_pieces = [
@@ -131,7 +131,7 @@ class TaTeTi():
         """Menu que muestra la creación de los equipos
         """
 
-        print("Bienvenido al TaTeTi\n")
+        print("Bienvenido al TaTeTi!!!\n")
 
         num_equipos = self.seleccionar_numero_equipos()
 
@@ -215,7 +215,7 @@ class TaTeTi():
                 self.poner_pieza()
             except CoordenadasFueraDelTablero:
                 print("TUS CORDENADAS ESTAN FUERA DEL TABLERO, VOLVE A INGRESARLAS\n")
-                self.poner_pieza() 
+                self.poner_pieza()
 
             self._turn_handler.next_turn()
             self._procesador_tablero.dibujar_tablero()
