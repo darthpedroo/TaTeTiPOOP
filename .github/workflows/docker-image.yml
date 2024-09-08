@@ -14,13 +14,19 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag tateti-game:$(date +%s)
+      run: |
+        IMAGE_TAG=tateti-game:latest
+        docker build . --file Dockerfile --tag $IMAGE_TAG
+        echo "Built Docker image with tag: $IMAGE_TAG"
 
-    # Save the Docker image as a .tar file
+    - name: List Docker images
+      run: docker images
+
     - name: Save Docker image to file
-      run: docker save tateti-game:$(date +%s) -o tateti-game.tar
+      run: |
+        IMAGE_TAG=tateti-game:latest
+        docker save $IMAGE_TAG -o tateti-game.tar
 
-    # Upload the .tar file as an artifact
     - name: Upload Docker image as artifact
       uses: actions/upload-artifact@v3
       with:
