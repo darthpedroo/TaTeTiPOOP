@@ -27,6 +27,9 @@ jobs:
         IMAGE_TAG=tateti-game:latest
         docker save $IMAGE_TAG -o tateti-game.tar
 
+    - name: List files
+      run: ls -la
+
     - name: Upload Docker image as artifact
       uses: actions/upload-artifact@v3
       with:
