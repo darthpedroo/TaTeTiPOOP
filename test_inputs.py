@@ -4,13 +4,8 @@ from game.tablero import Tablero
 from game.procesador import ProcesadorTableroConsola
 from game.victoryhandler import TaTeTiVictoryHandler
 from game.juego import TaTeTi
-from game.fichas import  FichaSigma
+from game.fichas import FichaSigma
 from game.coordenadas import Coordenadas
-
-
-def get_user_name():
-    name = input("Enter your name: ")
-    return f"Hello, {name}!"
 
 
 class TestUserInputTaTeTi(unittest.TestCase):
