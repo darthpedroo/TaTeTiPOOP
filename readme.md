@@ -70,6 +70,11 @@ Wrote HTML report to htmlcov\index.html
 
 ## Docker
 
+To pull the image from docker hub do:
+```bash
+docker pull darthpedroo/tateti-game:latest
+```
+
 You can run this project using Docker too.
 
 ### Prerequisites
