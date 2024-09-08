@@ -25,7 +25,7 @@ class TestTaTeTi(unittest.TestCase):
                                self.procesador_tablero_consola, self.victory_handler)
         self.ta_te_ti._list_of_teams = self.teams
 
-    def test_01_partida_1_vs_1(self):
+    def test_01_partida_1_vs_1_gana_equipo_0(self):
         print("test_01_partida_1_vs_1")
         pieza_j1 = self.teams[0].pieza_del_equipo
         pieza_j2 = self.teams[1].pieza_del_equipo
