@@ -20,8 +20,12 @@ TaTeTiPoo is an object oriented prgogramming TicTacToe game made in python
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-repo/tatetipoo.git
-cd tatetipoo
+https:
+git clone [https://github.com/your-repo/tatetipoo.git](https://github.com/darthpedroo/TaTeTiPOOP.git)
+or
+ssh:
+git@github.com:darthpedroo/TaTeTiPOOP.git
+cd TaTeTiPOOP
 ```
 
 2. To run the game:
