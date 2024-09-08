@@ -1,6 +1,6 @@
 # TaTeTiPoo
 
-TaTeTiPoo is an object oriented prgogramming TicTacToe game made in python
+TaTeTiPoo is an object oriented programming TicTacToe game made in python
 
 
 ## Features
