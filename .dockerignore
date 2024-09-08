@@ -1,0 +1,34 @@
+# Python cache files
+__pycache__
+*.pyc
+*.pyo
+
+# Virtual environment
+env/
+venv/
+ENV/
+
+# Git files
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules
+
+# IDE/editor files
+.vscode
+.idea
+*.suo
+*.ntvs_analysis.dat
+*.njsproj
+*.sln
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Other
+*.md
